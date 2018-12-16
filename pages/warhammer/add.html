@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Editors | Bootstrap Based Admin Template - Material Design</title>
+    <title>Basic Form Elements | Bootstrap Based Admin Template - Material Design</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -20,6 +20,18 @@
 
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Bootstrap Material Datetime Picker Css -->
+    <link href="../../plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
+    <!-- Bootstrap DatePicker Css -->
+    <link href="../../plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+
+    <!-- Wait Me Css -->
+    <link href="../../plugins/waitme/waitMe.css" rel="stylesheet" />
+
+    <!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
@@ -444,7 +456,7 @@
                             <span>Forms</span>
                         </a>
                         <ul class="ml-menu">
-                            <li>
+                            <li class="active">
                                 <a href="../../pages/forms/basic-form-elements.html">Basic Form Elements</a>
                             </li>
                             <li>
@@ -459,7 +471,7 @@
                             <li>
                                 <a href="../../pages/forms/form-wizard.html">Form Wizard</a>
                             </li>
-                            <li class="active">
+                            <li>
                                 <a href="../../pages/forms/editors.html">Editors</a>
                             </li>
                         </ul>
@@ -793,94 +805,55 @@
 
     <section class="content">
         <div class="container-fluid">
-            <div class="block-header">
-                <h2>EDITORS</h2>
-            </div>
-
-            <!-- CKEditor -->
-            <div class="row clearfix">
+            <!-- Input -->
+      <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
                             <h2>
-                                CKEDITOR
-                                <small>CKEditor is a ready-for-use HTML text editor designed to simplify web content creation. Taken from <a href="http://ckeditor.com/" target="_blank">ckeditor.com</a></small>
+                                发表新的帖子
+                                <small>若您在您的照片上传完成前提交内容，照片将无法显示</small>
                             </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            
                         </div>
                         <div class="body">
-                            <textarea id="ckeditor">
-                                <h2>WYSIWYG Editor</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ullamcorper sapien non nisl facilisis bibendum in quis tellus. Duis in urna bibendum turpis pretium fringilla. Aenean neque velit, porta eget mattis ac, imperdiet quis nisi. Donec non dui et tortor vulputate luctus. Praesent consequat rhoncus velit, ut molestie arcu venenatis sodales.</p>
-                                <h3>Lacinia</h3>
-                                <ul>
-                                    <li>Suspendisse tincidunt urna ut velit ullamcorper fermentum.</li>
-                                    <li>Nullam mattis sodales lacus, in gravida sem auctor at.</li>
-                                    <li>Praesent non lacinia mi.</li>
-                                    <li>Mauris a ante neque.</li>
-                                    <li>Aenean ut magna lobortis nunc feugiat sagittis.</li>
-                                </ul>
-                                <h3>Pellentesque adipiscing</h3>
-                                <p>Maecenas quis ante ante. Nunc adipiscing rhoncus rutrum. Pellentesque adipiscing urna mi, ut tempus lacus ultrices ac. Pellentesque sodales, libero et mollis interdum, dui odio vestibulum dolor, eu pellentesque nisl nibh quis nunc. Sed porttitor leo adipiscing venenatis vehicula. Aenean quis viverra enim. Praesent porttitor ut ipsum id ornare.</p>
-                            </textarea>
-                        </div>
+							<div class="row clearfix">
+								<p class="col-sm-4">帖子的标题</p>
+								<p class="col-sm-4">选择板块</p>
+							</div>
+                            <div class="row clearfix">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" placeholder="标题" />
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="col-sm-4">
+                                    <select class="form-control show-tick">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
+							<div class="row clearfix" id="vue">
+                                <div class="col-sm-12">
+                                    <textarea id="editor" ></textarea>
+									<br>
+							<button @click="show()" type="button" class="btn btn-primary waves-effect">提交</button>
+                                </div>
+                            </div>
+							
+						</div>
                     </div>
                 </div>
             </div>
-            <!-- #END# CKEditor -->
-            <!-- TinyMCE -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                TINYMCE
-                                <small>Taken from <a href="https://www.tinymce.com" target="_blank">www.tinymce.com</a></small>
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <textarea id="tinymce">
-                                <h2>WYSIWYG Editor</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ullamcorper sapien non nisl facilisis bibendum in quis tellus. Duis in urna bibendum turpis pretium fringilla. Aenean neque velit, porta eget mattis ac, imperdiet quis nisi. Donec non dui et tortor vulputate luctus. Praesent consequat rhoncus velit, ut molestie arcu venenatis sodales.</p>
-                                <h3>Lacinia</h3>
-                                <ul>
-                                    <li>Suspendisse tincidunt urna ut velit ullamcorper fermentum.</li>
-                                    <li>Nullam mattis sodales lacus, in gravida sem auctor at.</li>
-                                    <li>Praesent non lacinia mi.</li>
-                                    <li>Mauris a ante neque.</li>
-                                    <li>Aenean ut magna lobortis nunc feugiat sagittis.</li>
-                                </ul>
-                                <h3>Pellentesque adipiscing</h3>
-                                <p>Maecenas quis ante ante. Nunc adipiscing rhoncus rutrum. Pellentesque adipiscing urna mi, ut tempus lacus ultrices ac. Pellentesque sodales, libero et mollis interdum, dui odio vestibulum dolor, eu pellentesque nisl nibh quis nunc. Sed porttitor leo adipiscing venenatis vehicula. Aenean quis viverra enim. Praesent porttitor ut ipsum id ornare.</p>
-                            </textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# TinyMCE -->
+            <!-- #END# Input -->
+            
+          
         </div>
     </section>
 
@@ -899,18 +872,72 @@
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
 
-    <!-- Ckeditor -->
-    <script src="../../plugins/ckeditor/ckeditor.js"></script>
+    <!-- Autosize Plugin Js -->
+    <script src="../../plugins/autosize/autosize.js"></script>
 
-    <!-- TinyMCE -->
-    <script src="../../plugins/tinymce/tinymce.js"></script>
+    <!-- Moment Plugin Js -->
+    <script src="../../plugins/momentjs/moment.js"></script>
+
+    <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="../../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+
+    <!-- Bootstrap Datepicker Plugin Js -->
+    <script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
     <!-- Custom Js -->
     <script src="../../js/admin.js"></script>
-    <script src="../../js/pages/forms/editors.js"></script>
+    <script src="../../js/pages/forms/basic-form-elements.js"></script>
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
-</body>
+	
+	<!-- VUE -->
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/vue-resource.min.js"></script>
+	
+	<!-- ckeditor -->
+	<script src="../../plugins/ckeditor/ckeditor.js"></script>
+		
+	<script>
+		var editor;
+		// replace the textarea with CKedotor
+		window.onload = function()
+		{
+//			CKEDITOR.replace( 'editor');
+			var ed = CKEDITOR.replace( 'editor', {
+				extraPlugins: 'easyimage',
+				cloudServices_tokenUrl: 'https://36320.cke-cs.com/token/dev/w9ats4OBfSNALBRwrkneHYpZN7xKnLJEa1YBnmGiMYMhDhxdbze50dpECG8T',
+				cloudServices_uploadUrl: 'https://36320.cke-cs.com/easyimage/upload/'
+			});
+			editor = ed;
+		};
+		
 
+		// test VUE
+		var t = new Vue({
+			el: '#vue',
+			data: {
+				text: ''
+			},
+			methods: {
+				show: function() {
+					// 获取CKeditor的内容
+					this.text = editor.getData();
+					//out.text=this.text;
+					console.log(this.text);
+				}
+			}
+		
+		});
+		
+		// vue output
+//		var out = new Vue({
+//			el: '#out',
+//			data: {
+//				text: ''
+//			}
+//			
+//		})
+	</script>
+</body>
 </html>
