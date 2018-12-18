@@ -1,10 +1,10 @@
 $(function () {
     $('.colorpicker').colorpicker();
-
+		url: "~/Desktop"
     //Dropzone
     Dropzone.options.frmFileUpload = {
         paramName: "file",
-        maxFilesize: 2
+        maxFilesize: 5
     };
 
     //Masked Input ============================================================================================================================
