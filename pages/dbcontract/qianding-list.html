@@ -814,18 +814,22 @@
                                     <thead>
                                         <tr>
                                             <th>合同名称</th>
-                                            <th>起草时间</th>
-                                            <th>操作</th>
+                                            <th>客户</th>
+                                            <th>开始时间</th>
+											<th>结束时间</th>
+											<th>操作</th>
                                         </tr>
                                     </thead>
 									<tbody>
 										<template v-for="i in d">
 											<tr>
 												<td><a href="javascript:void(0);" @click="link(i.link)">{{ i.name }}</a></td>
-												<td>{{ i.date }}</td>
+												<td>{{ i.customer }}</td>
+												<td>{{ i.start }}</td>
+												<td>{{ i.end }}</td>
 												<td class="align-center row">
 													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="show(i.id,i.name)" class="btn bg-amber waves-effect">会 签</button>
+														<button type="button" @click="show(i.id,i.name)" class="btn bg-amber waves-effect">签 定</button>
 													</div>
 												</td>
 											</tr>
@@ -888,28 +892,28 @@
 			el: '#vue',
 			data: {
 					d: [
-						{id: 1, name: "种猪", date: "2018/5/6", link: "http://www.baidu.com"},
-						{id: 2, name: "ojbk", date: "2018/7/8", link: "http://www.4399.com"}
+						{id: 1, name: "种猪", customer: "asd", start: "2018/7/8", end: "2018/7/9", link: "http://www.baidu.com"},
+						{id: 2, name: "ojbk", customer: "asd", start: "2018/7/8", end: "2018/12/12",link: "http://www.4399.com"}
 					]
 			},
 			methods: {
 				show: function(a, b) {
 					swal({
 						title: b,
-						text: "您的会签意见:",
+						text: "签定信息:",
 						type: "input",
 						showCancelButton: true,
 						closeOnConfirm: false,
 						animation: "slide-from-top",
-						inputPlaceholder: "请你输入您的意见"
+						inputPlaceholder: "请你输入内容"
 					}, function (inputValue) {
 						if (inputValue === false) return false;
 						if (inputValue === "") {
-							swal.showInputError("您需要输入您的意见!"); return false
+							swal.showInputError("您需要输入内容!"); return false
 						}
 						swal({
 							title: "完成",
-							text: "您的意见: " + inputValue,
+							text: "签定信息: " + inputValue,
 							type: "success",
 							showCancelButton: false,
 							closeOnConfirm: false
