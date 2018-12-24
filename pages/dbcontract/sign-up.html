@@ -120,7 +120,7 @@
 				},
 				post:function(){
 					//发送 post 请求
-					this.$http.post('/user/account/register',{username:this.username, password:this.password, passwordConfirm:this.passwordconfirm, email:this.email},{emulateJSON:true}).then(function(res){
+					this.$http.post('http://149.248.21.145:8000/register/',{username:this.username, password:this.password, passwordConfirm:this.passwordconfirm, email:this.email},{emulateJSON:true}).then(function(res){
 						console.log(res.data);
 						window.location.href='sign-up.html';
 					},function(res){
@@ -137,12 +137,13 @@
 				post:function(){
 					//发送 post 请求
 					console.log("post");
-					this.$http.post('http://47.94.252.84:8081/user/account/register',{username:this.username, password:this.password, passwordConfirm:this.passwordconfirm, email:this.email},{emulateJSON:true}).then(function(res){
+					this.$http.post('http://149.248.21.145:8000/register/',{username:this.username, password:this.password, email:this.email},{emulateJSON:true}).then(function(res){
 						console.log(res);
-						window.location.href='sign-in.html';
+						
 					},function(res){
-						console.log(res.status);
-						alert(res);
+            //window.location.href='sign-in.html';
+            console.log(res.data);
+						//this.$http.post('http://149.248.21.145:8000/users/',{username:this.username, password:this.password, email:this.email},{emulateJSON:true}).then(function(res){
 					});
 				}
 			}

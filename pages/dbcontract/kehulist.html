@@ -21,8 +21,8 @@
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
 	
-	<!-- Sweetalert Css -->
-    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- Sweetalert Css -->
+    <!-- <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />-->
 
     <!-- JQuery DataTable Css -->
     <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
@@ -32,6 +32,8 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.min.css" rel="stylesheet" />
 </head>
 
 <body class="theme-red">
@@ -827,22 +829,23 @@
                                     <thead>
                                         <tr>
                                             <th>客户名称</th>
+                                            <th>客户邮箱</th>
                                             <th>操作</th>
                                         </tr>
                                     </thead>
-									<tbody>
-										<template v-for="i in d">
-											<tr>
-												<td><a href="javascript:void(0);">{{ i.name }}</a></td>
-												<td class="align-center row">
-													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="show(i.id,i.name)" class="btn bg-blue waves-effect">查 看</button>
-														<button type="button" @click="update(i.id,i.name)" class="btn bg-amber waves-effect">修 改</button>
-														<button type="button" @click="delete(i.id,i.name)" class="btn bg-red waves-effect">删 除</button>
-													</div>
-												</td>
-											</tr>
-										</template>
+                                    <tbody>
+                                      <template v-for="i in d">
+                                        <tr>
+                                          <td><p contenteditable="true">{{ i.name }}</p></td>
+                                          <td><p contenteditable="true">{{ i.email }}</p></td>
+                                          <td class="align-left row">
+                                            <div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
+                                              <button type="button" @click="update(i.id,i.name)" class="btn bg-amber waves-effect">修 改</button>
+                                              <button type="button" @click="delete1(i.id,i.name)" class="btn bg-red waves-effect">删 除</button>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -885,8 +888,7 @@
 <!--    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>-->
 	
 	<!-- SweetAlert 2 -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
-
+	<script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
     <!-- Custom Js -->
     <script src="../../js/admin.js"></script>
     <script src="../../js/pages/tables/jquery-datatable.js"></script>
@@ -903,19 +905,66 @@
 			el: '#vue',
 			data: {
 					d: [
-						{id: 1, name: "种猪"},
-						{id: 2, name: "ojbk"}
+						{id: 1, name: "种猪", email: "dasdsa"},
+						{id: 2, name: "ojbk", email: "yrtytr"}
 					]
 			},
 			methods: {
 				show: function(id, name) {
-					
+					Swal({
+            title: '<strong>HTML <u>example</u></strong>',
+            type: 'info',
+            html:
+              'You can use <b>bold text</b>, ' +
+              '<a href="//github.com">links</a> ' +
+              'and other HTML tags',
+            showCloseButton: true,
+            focusConfirm: false,
+            confirmButtonAriaLabel: 'Thumbs up, great!',
+            confirmButtonText:
+              '<i class="fa fa-thumbs-up"></i> 关闭',
+            
+          })
 				},
 				update: function(id, name) {
 					
 				},
-				delete: function(id, name) {
-					
+				delete1: function(id, name) {
+          const swalWithBootstrapButtons = Swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: true,
+          })
+
+          swalWithBootstrapButtons({
+            title: '确定删除么',
+            text: "删除后不可恢复！",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '是, 删除',
+            cancelButtonText: '否, 取消',
+            reverseButtons: false
+          }).then((result) => {
+            if (result.value) {
+              Vue.http.delete('htt://149.248.21.145:8000/clients/'+id+'/').then(function(res){
+                swalWithBootstrapButtons(
+                '已删除!',
+                '该客户已被删除',
+                'success'
+                )
+              })
+              
+            } else if (
+              // Read more about handling dismissals
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons(
+                '已取消',
+                '客户未被删除',
+                'error'
+              )
+            }
+          })
 				},
 				link: function(a) {
 					console.log("123");
