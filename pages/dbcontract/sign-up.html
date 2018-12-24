@@ -139,9 +139,11 @@
 					console.log("post");
 					this.$http.post('http://149.248.21.145:8000/register/',{username:this.username, password:this.password, email:this.email},{emulateJSON:true}).then(function(res){
 						console.log(res);
+						window.location.href='sign-in.html';
 						
 					},function(res){
-
+						console.log(JSON.stringify(res.body));
+						alert(res.status);
 					});
 				}
 			}
