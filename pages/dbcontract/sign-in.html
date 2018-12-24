@@ -37,10 +37,10 @@
                     <div class="msg">登录 / <a href="sign-up.html"> 注册</a>开始您的使用</div>
                     <div class="input-group">
                         <span class="input-group-addon">
-                            <i class="material-icons">person</i>
+                            <i class="material-icons">email</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="username" placeholder="用户名" v-model="username" required autofocus>
+                            <input type="email" class="form-control" name="email" placeholder="邮箱" v-model="username" required autofocus>
                         </div>
                     </div>
                     <div class="input-group">
@@ -110,11 +110,11 @@
 				},
 				post:function(){
 					//发送 post 请求
-					this.$http.post('http://47.94.252.84:8081/user/account/login',{username:this.username, password: this.password},{emulateJSON:true}).then(function(res){
-						console.log(res.data.data);
-						localStorage.token=JSON.stringify(res.data.data);
-						console.log(JSON.parse(localStorage.token));
-						//window.location.href='http://www.baidu.com';
+					this.$http.post('http://149.248.21.145:8000/token/',{username:this.username, password: this.password},{emulateJSON:true}).then(function(res){
+						sessionStorage.email=this.username;
+						sessionStorage.token=res.data.token;
+						console.log(sessionStorage.token);
+						window.location.href='index.html';
 					},function(res){
 						console.log(res.data.data);
 						
