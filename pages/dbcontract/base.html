@@ -82,27 +82,27 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_write_contracts">
-                                <a href="javascript:void(0);">
+                                <a href="db-qicao.html">
                                     <span>起草合同</span>
                                 </a>
                             </li>
 							<li v-if="data.can_countersign">
-                                <a href="javascript:void(0);">
+                                <a href="db-huiqian.html">
                                     <span>会签合同</span>
                                 </a>
                             </li>
 							<li v-if="data.can_write_contracts">
-                                <a href="javascript:void(0);">
+                                <a href="db-dinggao.html">
                                     <span>定稿合同</span>
                                 </a>
                             </li>
 							<li v-if="data.can_review">
-                                <a href="javascript:void(0);">
+                                <a href="db-shenpi.html">
                                     <span>审批合同</span>
                                 </a>
                             </li>
 							<li v-if="data.can_sign">
-                                <a href="javascript:void(0);">
+                                <a href="db-qianding.html">
                                     <span>签订合同</span>
                                 </a>
                             </li>
@@ -115,12 +115,12 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_read_contracts">
-                                <a href="javascript:void(0);">
+                                <a href="db-chaxun.html">
                                     <span>合同查询</span>
                                 </a>
                             </li>
 							<li v-if="data.can_manage_clients">
-                                <a href="javascript:void(0);">
+                                <a href="db-kehu.html">
                                     <span>客户管理</span>
                                 </a>
                             </li>
@@ -133,17 +133,17 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_distribute">
-                                <a href="javascript:void(0);">
+                                <a href="db-fenpei.html">
                                     <span>合同分配</span>
                                 </a>
                             </li>
 							<li v-if="data.can_manage_users">
-                                <a href="javascript:void(0);">
+                                <a href="db-yonghu.html">
                                     <span>用户管理</span>
                                 </a>
                             </li>
 							<li v-if="data.can_manage_roles">
-                                <a href="javascript:void(0);">
+                                <a href="db-juese.html">
                                     <span>角色管理</span>
                                 </a>
                             </li>
@@ -201,10 +201,10 @@
 	
 	<script>
 		
-		if(typeof(localStorage.theme)!="undefined"){
-			$('body').removeClass($('body').prop("className"));
-			$('body').addClass(localStorage.theme);
-		}
+//		if(typeof(localStorage.theme)!="undefined"){
+//			$('body').removeClass($('body').prop("className"));
+//			$('body').addClass(localStorage.theme);
+//		}
 		
 		
 		function sc(){
@@ -241,7 +241,7 @@
 			methods: {
 				get: function(){
 					// test role
-					// role = 2;
+					 //role = 2;
 					if(role!=null) {
 						//发送 post 请求
 						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){

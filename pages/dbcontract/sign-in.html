@@ -116,11 +116,14 @@
 						console.log(sessionStorage.token);
 						// get role
 						Vue.http.get('http://149.248.21.145:8000/me/',{headers:{Authorization: "Token "+sessionStorage.token}},{emulateJSON:true}).then(function(res){
+							console.log(res.body);
 							sessionStorage.role = res.body.role;
+							sessionStorage.id = res.body.id;
+							window.location.href='index.html';
 						},function(res){
 							console.log(res);
 						});
-						window.location.href='index.html';
+						
 					},function(res){
 						console.log(res.data.data);
 						
