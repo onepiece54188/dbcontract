@@ -210,7 +210,7 @@
 												<td>{{ i.content }}</td>
 												<td class="align-center row">
 													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="show(i.id,i.title,i.countersigns[0].id)" class="btn bg-amber waves-effect">审 批</button>
+														<button type="button" @click="show(i.id,i.title,i.reviews[0].id)" class="btn bg-amber waves-effect">审 批</button>
 													</div>
 												</td>
 											</tr>
@@ -342,17 +342,18 @@
     methods: {
       show: async function(id, name, counterSignId) {
         const {value: opinion} = await Swal({
-          title: '会签: '+ name,
+          title: '审批: '+ name,
           input: 'textarea',
-          inputPlaceholder: '请输入您的会签意见',
+          inputPlaceholder: '请输入您的审批意见',
           showCancelButton: true,
           confirmButtonText: '提交',
-          cancelButtonText: '取消',
+          cancelButtonText: '拒绝',
+			cancelButtonColor: '#FF3030',
         });
         if (opinion) {
           Swal({
             title: '确定提交么',
-            text: "您的会签意见为：" + opinion,
+            text: "您的审批意见为：" + opinion,
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -361,9 +362,9 @@
             cancelButtonText: '取消',
           }).then((result) => {
             if (result.value) {
-              this.$http.patch('http://149.248.21.145:8000/countersigns/'+counterSignId+'/',{message:opinion,is_confirmed:true}).then(function(res){
+              this.$http.patch('http://149.248.21.145:8000/reviews/'+counterSignId+'/',{message:opinion,is_confirmed:false}).then(function(res){
                 Swal(
-                  '会签成功',
+                  '审批成功',
                 ).then((result) => {
                   location=location;
                 })
@@ -371,7 +372,28 @@
               });
             }
           })
-        }
+        }else {
+			Swal({
+            title: '确定拒绝么',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+          }).then((result) => {
+            if (result.value) {
+              this.$http.patch('http://149.248.21.145:8000/contracts/'+id+'/',{status: "countersigned"}).then(function(res){
+                Swal(
+                  '审批已拒绝',
+                ).then((result) => {
+                  location=location;
+                })
+                
+              });
+            }
+          })
+		}
       
         <!-- swal({ -->
           <!-- title: b, -->
