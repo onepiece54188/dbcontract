@@ -1,10 +1,398 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Untitled Document</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Blank Page | Bootstrap Based Admin Template - Material Design</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+	
+	<!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../css/themes/all-themes.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="index.html">合同管理系统</a>
+            </div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="pull-right"><a href="sign-in.html" class=""><i class="material-icons">input</i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+<section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu" id="menu">
+                <ul class="list">
+                    <li class="header">功能列表</li>
+                    
+                    <li v-if="liucheng">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">trending_down</i>
+                            <span>流程管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_write_contracts">
+                                <a href="javascript:void(0);" onClick="qicao()">
+                                    <span>起草合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_countersign">
+                                <a href="db-huiqian.html">
+                                    <span>会签合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_write_contracts">
+                                <a href="db-dinggao.html">
+                                    <span>定稿合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_review">
+                                <a href="db-shenpi.html">
+                                    <span>审批合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_sign">
+                                <a href="db-qianding.html">
+                                    <span>签订合同</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+					<li v-if="xinxi">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">event_note</i>
+                            <span>信息管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_read_contracts">
+                                <a href="db-chaxun.html">
+                                    <span>合同查询</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_clients">
+                                <a href="db-kehu.html">
+                                    <span>客户管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+					<li v-if="xitong">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">settings</i>
+                            <span>系统管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_distribute">
+                                <a href="db-fenpei.html">
+                                    <span>合同分配</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_users">
+                                <a href="db-yonghu.html">
+                                    <span>用户管理</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_roles">
+                                <a href="db-juese.html">
+                                    <span>角色管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2018 - 2019 <a href="javascript:void(0);">合同管理系统</a>.
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>BLANK PAGE</h2>
+            </div>
+			
+			<!-- Basic Validation -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>BASIC VALIDATION</h2>
+                        </div>
+                        <div class="body">
+                            <form id="form_validation" method="POST">
+                            
+                                <div class="form-group">
+									<label class="form-label">合同名称*</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="name" placeholder="请输入合同名称" required>
+                                        
+                                    </div>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label class="form-label">客户</label>
+                                    <div class="row clearfix">
+										<div class="col-sm-6" id="clients">
+											<select class="form-control show-tick" id="select">
+
+												<template v-for="i in clients">
+													<option value="i.id">{{ i.name }}</option>
+												</template>
+											</select>
+										</div>
+                            		</div>
+                            	</div>
+                                <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label">开始时间*</label>
+                                    <div class="form-line">
+                                        <input type="date" class="form-control" name="name" required>
+                                        
+                                    </div>
+                                </div>
+                                </div>
+                            
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label">结束时间*</label>
+                                    <div class="form-line">
+                                        <input type="date" class="form-control" name="name" required>
+                                        
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+								<div class="form-group form-float">
+                                    <div class="form-line">
+                                        <textarea name="description" cols="30" rows="5" class="form-control no-resize" required></textarea>
+                                        <label class="form-label">合同内容*</label>
+                                    </div>
+                                </div>
+                                
+                                <div id="ckfinder1"></div>
+                                
+                                
+                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Basic Validation -->
+			
+			
+        </div>
+    </section>
+
+    <!-- Jquery Core Js -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+<!--   <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>-->
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+	
+	<!-- Jquery Validation Plugin Css -->
+    <script src="../../plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- JQuery Steps Plugin Js -->
+    <script src="../../plugins/jquery-steps/jquery.steps.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+	
+	<!-- Autosize Plugin Js -->
+    <script src="../../plugins/autosize/autosize.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+	<script src="../../js/pages/forms/form-validation.js"></script>
+<!--	<script src="../../js/pages/forms/basic-form-elements.js"></script>-->
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+	<script src="../../ckfinder/ckfinder.js"></script>
+	
+	<!-- Vue -->
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/vue-resource.min.js"></script>
+	
+	<script>
+    	CKFinder.widget( 'ckfinder1', {
+			height: 400,
+			//readOnly: true
+		} );
+	</script>
+	
+	<script>
+		
+//		if(typeof(localStorage.theme)!="undefined"){
+//			$('body').removeClass($('body').prop("className"));
+//			$('body').addClass(localStorage.theme);
+//		}
+		
+		function qicao() {
+			Vue.http.post('http://149.248.21.145:8000/contracts/',{title: "0", date_begin:"1970-01-01", date_end: "1970-01-02", content:"0", clients:[1], author:sessionStorage.id },{emulateJSON:true}).then(function(res){
+				console.log(res.body);
+				sessionStorage.contract_id=res.body.id;
+				window.location.href="db-qicao.html";
+//				sessionStorage.role = res.body.role;
+//				sessionStorage.id = res.body.id;
+//				window.location.href='index.html';
+			},function(res){
+				console.log(res);
+			});
+		};
+		
+		
+		function sc(){
+			// 重载js
+			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
+            });
+
+        };
+		
+		function cli() {
+//			$.getScript('../../plugins/bootstrap-select/js/bootstrap-select.js',function(){
+//            });
+		};
+	</script>
+	
+	<script>
+		var role = sessionStorage.role;
+		var permission = new Vue({
+			el:'#menu',
+			data: {
+				liucheng: false,
+				xinxi: false,
+				xitong: false,
+				data:{
+					id: '',
+					name: '',
+					can_read_contracts: false,
+					can_write_contracts: false,
+					can_countersign: false,
+					can_review: false,
+					can_sign: false,
+					can_distribute: false,
+					can_manage_users: false,
+					can_manage_roles: false,
+					can_manage_clients: false
+				}
+			},
+			methods: {
+				get: function(){
+					// test role
+					 //role = 2;
+					if(role!=null) {
+						//发送 post 请求
+						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
+							this.liucheng = true;
+							this.xinxi = true;
+							this.xitong = true;
+							this.data=res.body;
+							sc();
+						},function(res){
+							console.log(res);
+						});
+					}
+				},
+			}
+		});
+		
+		permission.get();
+		
+		var clients = new Vue({
+			el: "#clients",
+			data: {
+				clients:[],
+			},
+			methods: {
+				get: function() {
+					this.$http.get('http://149.248.21.145:8000/clients/').then(function(res){
+						console.log(res.body);
+						this.clients=res.body;
+						console.log(this.clients);
+						cli();
+					},function(res){
+						console.log(res);
+					});
+				},
+			}
+		});
+		
+		clients.get();
+		
+	</script>
 </body>
+
 </html>
