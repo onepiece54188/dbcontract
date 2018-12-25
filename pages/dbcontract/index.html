@@ -82,7 +82,7 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_write_contracts">
-                                <a href="javascript:void(0);" onClick="qicao()">
+                                <a href="db-qicao.html">
                                     <span>起草合同</span>
                                 </a>
                             </li>
@@ -205,12 +205,6 @@
 //			$('body').removeClass($('body').prop("className"));
 //			$('body').addClass(localStorage.theme);
 //		}
-		
-		function qicao() {
-			window.location.href="db-qicao.html";
-		};
-		
-		
 		function sc(){
 			// 重载js
 			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
