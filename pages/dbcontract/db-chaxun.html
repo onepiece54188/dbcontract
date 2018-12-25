@@ -1,10 +1,385 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Untitled Document</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Jquery DataTable | Bootstrap Based Admin Template - Material Design</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+	
+    <!-- Sweetalert Css -->
+    <!-- <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />-->
+
+    <!-- JQuery DataTable Css -->
+    <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="index.html">合同管理系统</a>
+            </div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="pull-right"><a href="sign-in.html" class=""><i class="material-icons">input</i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu" id="menu">
+                <ul class="list">
+                    <li class="header">功能列表</li>
+                    
+                    <li v-if="liucheng">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">trending_down</i>
+                            <span>流程管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_write_contracts">
+                                <a href="javascript:void(0);" onClick="qicao()">
+                                    <span>起草合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_countersign">
+                                <a href="db-huiqian.html">
+                                    <span>会签合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_write_contracts">
+                                <a href="db-dinggao.html">
+                                    <span>定稿合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_review">
+                                <a href="db-shenpi.html">
+                                    <span>审批合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_sign">
+                                <a href="db-qianding.html">
+                                    <span>签订合同</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+					<li v-if="xinxi">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">event_note</i>
+                            <span>信息管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_read_contracts">
+                                <a href="db-chaxun.html">
+                                    <span>合同查询</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_clients">
+                                <a href="db-kehu.html">
+                                    <span>客户管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+					<li v-if="xitong">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">settings</i>
+                            <span>系统管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_distribute">
+                                <a href="db-fenpei.html">
+                                    <span>合同分配</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_users">
+                                <a href="db-yonghu.html">
+                                    <span>用户管理</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_roles">
+                                <a href="db-juese.html">
+                                    <span>角色管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2018 - 2019 <a href="javascript:void(0);">合同管理系统</a>.
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid"> <!-- Basic Examples -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                合同列表
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+									
+                                    <a href="javascript:void(0);">
+                                        <i class="material-icons">add</i>
+                                    </a>
+<!--
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">增加客户</a></li>
+                                        
+                                    </ul>
+-->
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive" id="vue">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>合同名称</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <template v-for="i in info">
+                                        <tr>
+                                          <td><p contenteditable="true">{{ i.id }}</p></td>
+                                          <td><p contenteditable="true">{{ i.title }}</p></td>
+                                          <td class="align-left row">
+                                            <div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
+                                              <button type="button" @click="show(i.id,i.title,i.date_begin,i.date_end,i.content,i.status)" class="btn bg-blue waves-effect">查看</button>
+                                              <!-- <button type="button" @click="update(i.id,i.name)" class="btn bg-amber waves-effect">修 改</button> -->
+                                              <button type="button" @click="delete1(i.id,i.title)" class="btn bg-red waves-effect">删 除</button>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Basic Examples -->
+            <!-- Exportable Table -->            <!-- #END# Exportable Table -->
+        </div>
+    </section>
+
+    <!-- Jquery Core Js -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+	
+	<!-- SweetAlert Plugin Js -->
+<!--    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>-->
+	
+	<!-- SweetAlert 2 -->
+	<script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/tables/jquery-datatable.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+	
+	<!-- VUE -->
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/vue-resource.min.js"></script>
+	
+	<script>
+  var contractInfos;
+  
+  $.ajax({
+    url:"http://149.248.21.145:8000/contracts/",//请求的url地址
+    dataType:"json",//返回的格式为json
+    async:false,//请求是否异步，默认true异步，这是ajax的特性
+    data:{"id":"value"},//参数值
+    type:"GET",//请求的方式
+    beforeSend:function(){},//请求前的处理
+    success:function(res){
+      contractInfos = res;
+    },//请求成功的处理
+    complete:function(){},//请求完成的处理
+    error:function(){
+      console.log(res);
+    }//请求出错的处理
+   
+  });
+  
+  function openUrl(url){
+            window.open(url);
+    };
+  var table = new Vue({
+    el: '#vue',
+    data: {
+      info:contractInfos,
+    },
+    
+    methods: {
+      show: function(id, name,begin,end,content,status) {
+        this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
+        Swal({
+          title: '<strong>合同信息</strong>',
+          type: 'info',
+          html:
+            '<p align="left"><span style="font-size:14px;"><strong>名称：</strong></span></p>'+ name +
+            '<p align="left"><span style="font-size:14px;"><strong>开始时间：</strong></span> </p>'+ begin +
+            '<p align="left"><span style="font-size:14px;"><strong>结束时间：</strong><br /></span> </p>'+ end +
+            '<p align="left"><span style="font-size:14px;"><strong>内容：</strong><br /></span> </p>'+ content + 
+            '<p align="left"><span style="font-size:14px;"><strong><a onclick="openUrl(\'http://127.0.0.1:8083/ckfinder/samples/full-page-open.html\')">附件</a></strong></span></p>',
+          showCloseButton: true,
+          focusConfirm: false,
+          confirmButtonAriaLabel: 'Thumbs up, great!',
+          confirmButtonText:
+            '<i class="fa fa-thumbs-up"></i> 关闭',
+          
+        })
+      },
+      update: function(id, name) {
+        
+      },
+      delete1: function(id, name) {
+        const swalWithBootstrapButtons = Swal.mixin({
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: true,
+        })
+
+        swalWithBootstrapButtons({
+          title: '确定删除么',
+          text: "删除后不可恢复！",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: '是, 删除',
+          cancelButtonText: '否, 取消',
+          reverseButtons: false
+        }).then((result) => {
+          if (result.value) {
+            console.log('yes');
+            this.$http.delete('http://149.248.21.145:8000/contracts/'+id+'/').then(function(res){
+              swalWithBootstrapButtons(
+              '已删除!',
+              '该合同已被删除',
+              'success'
+              )
+            })
+          } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+          
+            console.log('no');
+            swalWithBootstrapButtons(
+              '已取消',
+              '合同未被删除',
+              'error'
+            )
+          }
+        })
+      },
+      link: function(a) {
+        console.log("123");
+        window.open(a);
+      },
+      getdata: function(){
+        //发送get请求
+        this.$http.get('http://149.248.21.145:8000/clients/').then(function(res){
+          console.log(res);    
+        });
+      },
+    },
+  });
+		
+		table.getdata();
+	</script>
 </body>
+
 </html>
