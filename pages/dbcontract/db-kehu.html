@@ -182,7 +182,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                角色管理
+                                客户管理
                             </h2>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
@@ -197,17 +197,9 @@
                                 <table class="table table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>序号</th>
-                                            <th>名称</th>
-                                            <th>起草/定稿</th>
-                                            <th>会签</th>
-                                            <th>审批</th>
-											<th>签定</th>
-											<th>合同查询</th>
-											<th>客户管理</th>
-											<th>流程分配</th>
-											<th>用户管理</th>
-											<th>角色管理</th>
+                                            <th>序 号</th>
+                                            <th>名 称</th>
+                                            <th>邮 箱</th>
 											<th>操 作</th>
                                         </tr>
                                     </thead>
@@ -216,15 +208,7 @@
 											<tr>
                         						<td>{{ i.id }}</td>
 												<td>{{ i.name }}</td>
-												<td>{{ i.can_write_contracts }}</td>
-												<td>{{ i.can_countersign }}</td>
-												<td>{{ i.can_review }}</td>
-												<td>{{ i.can_sign }}</td>
-												<td>{{ i.can_read_contracts }}</td>
-												<td>{{ i.can_manage_clients }}</td>
-												<td>{{ i.can_distribute }}</td>
-												<td>{{ i.can_manage_users }}</td>
-												<td>{{ i.can_manage_roles }}</td>
+												<td>{{ i.email }}</td>
 												<td class="row">
 													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
 														<button type="button" @click="show(i.id,i.title,i.countersigns[0].id)" class="btn bg-amber waves-effect">修改角色</button>
@@ -345,7 +329,7 @@
 				get: function() {
 					$.ajax({
 						type: "GET",
-						url: 'http://149.248.21.145:8000/roles',
+						url: 'http://149.248.21.145:8000/clients/',
 						dataType: "json",
 						async: false,
 						success: function(res){
