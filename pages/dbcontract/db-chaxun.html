@@ -203,6 +203,7 @@
                                         <tr>
                                             <th>序号</th>
                                             <th>合同名称</th>
+                                            <th>客户</th>
                                             <th>开始时间</th>
                                             <th>结束时间</th>
                                             <th>合同内容</th>
@@ -212,11 +213,13 @@
                                     <tbody>
                                       <template v-for="i in info">
                                         <tr>
-                                          <td><p contenteditable="true">{{ i.id }}</p></td>
-                                          <td><p contenteditable="true">{{ i.title }}</p></td>
-                                          <td><p contenteditable="true">{{ i.date_begin }}</p></td>
-                                          <td><p contenteditable="true">{{ i.date_end }}</p></td>
-                                          <td><p contenteditable="true">{{ i.content }}</p></td>
+                                          <td><p>{{ i.id }}</p></td>
+                                          <td><p>{{ i.title }}</p></td>
+                                          <td v-if="i.clients.length>0"><p>{{ sessionStorage['client'+i.clients[0]] }}</p></td>
+                                          <td v-if="i.clients.length == 0"><p>无</p></td>
+                                          <td><p>{{ i.date_begin }}</p></td>
+                                          <td><p>{{ i.date_end }}</p></td>
+                                          <td><p>{{ i.content }}</p></td>
                                           <td class="align-left row">
                                             <div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
                                               <button type="button" @click="openUrl(i.id)" class="btn bg-blue waves-effect">查看附件</button>
@@ -297,6 +300,23 @@
       console.log(res);
     }//请求出错的处理
   });
+  $.ajax({
+    url:"http://149.248.21.145:8000/clients/",//请求的url地址
+    dataType:"json",//返回的格式为json
+    async:false,//请求是否异步，默认true异步，这是ajax的特性
+    <!-- data:{"id":"value"},//参数值 -->
+    type:"GET",//请求的方式
+    beforeSend:function(){},//请求前的处理
+    success:function(res){
+      for(i=0,len=res.length;i<len;i++)
+        sessionStorage['client'+res[i].id] = res[i].name;
+      console.log(sessionStorage['client1']);
+    },//请求成功的处理
+    complete:function(){},//请求完成的处理
+    error:function(){
+      console.log(res);
+    }//请求出错的处理
+  });
   
   var role = sessionStorage.role;
   var permission = new Vue({
@@ -343,18 +363,6 @@
             },
             
           });
-//						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-//							this.liucheng = true;
-//							this.xinxi = true;
-//							this.xitong = true;
-//							this.data=res.body;
-//              sessionStorage.allPermission = JSON.stringify(this.data);
-//              /*var obj = JSON.parse(sessionStorage.allPermission);
-//              console.log(obj.can_read_contracts);测试session如何存储对象*/
-//							sc();
-//						},function(res){
-//							console.log(res);
-//						});
         }
       },
     }

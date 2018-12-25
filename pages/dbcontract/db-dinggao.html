@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>定稿合同</title>
+    <title>查询合同</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -21,8 +21,8 @@
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
 	
-	<!-- Sweetalert Css -->
-    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- Sweetalert Css -->
+    <!-- <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />-->
 
     <!-- JQuery DataTable Css -->
     <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
@@ -32,6 +32,8 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
 </head>
 
 <body class="theme-red">
@@ -55,7 +57,6 @@
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
-
     <!-- Top Bar -->
     <nav class="navbar">
         <div class="container-fluid">
@@ -71,8 +72,7 @@
             </div>
         </div>
     </nav>
-    <!-- #Top Bar -->
-<section>
+    <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->            <!-- #User Info -->
@@ -88,7 +88,7 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_write_contracts">
-                                <a href="javascript:void(0);" onClick="qicao()">
+                                <a href="db-qicao.html">
                                     <span>起草合同</span>
                                 </a>
                             </li>
@@ -173,43 +173,62 @@
     </section>
 
     <section class="content">
-        <div class="container-fluid">
-            <!-- Basic Examples -->
+        <div class="container-fluid"> <!-- Basic Examples -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
                             <h2>
-                                BASIC EXAMPLE
+                                合同列表
                             </h2>
-                            
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+									
+                                    <a href="javascript:void(0);">
+                                        <i class="material-icons">add</i>
+                                    </a>
+<!--
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">增加客户</a></li>
+                                        
+                                    </ul>
+-->
+                                </li>
+                            </ul>
                         </div>
                         <div class="body">
                             <div class="table-responsive" id="vue">
-                                <table class="table table-striped table-hover js-basic-example dataTable">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>标题</th>
+                                            <th>序号</th>
+                                            <th>合同名称</th>
+                                            <th>客户</th>
                                             <th>开始时间</th>
                                             <th>结束时间</th>
-											<th>内容</th>
-											<th>操作</th>
+                                            <th>合同内容</th>
+                                            <th>操作</th>
                                         </tr>
                                     </thead>
-									<tbody>
-										<template v-for="i in d">
-											<tr>
-												<td><a href="javascript:void(0);" @click="link(i.link)">{{ i.title }}</a></td>
-												<td>{{ i.date_begin }}</td>
-												<td>{{ i.date_end }}</td>
-												<td>{{ i.content }}</td>
-												<td class="align-center row">
-													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="show(i.id,i.name)" class="btn bg-amber waves-effect">会 签</button>
-													</div>
-												</td>
-											</tr>
-										</template>
+                                    <tbody>
+                                      <template v-for="(i, index) in info">
+                                        <tr>
+                                          <td class="contractId"><p>{{ i.id }}</p></td>
+                                          <td><p>{{ i.title }}</p></td>
+                                          <td v-if="i.clients.length>0"><p>{{ sessionStorage['client'+i.clients[0]] }}</p></td>
+                                          <td v-if="i.clients.length == 0"><p>无</p></td>
+                                          <td><p>{{ i.date_begin }}</p></td>
+                                          <td><p>{{ i.date_end }}</p></td>
+                                          <td class="contractContent"><p contenteditable="true">{{ i.content }}</p></td>
+                                          <td class="align-left row">
+                                            <div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
+                                              <button type="button" @click="openUrl(i.id)" class="btn bg-blue waves-effect">附 件</button>
+                                              <button type="button" @click="update(index)" class="btn bg-amber waves-effect">定 稿</button>
+                                              <button type="button" @click="delete1(i.id,i.title)" class="btn bg-red waves-effect">删 除</button>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -218,6 +237,7 @@
                 </div>
             </div>
             <!-- #END# Basic Examples -->
+            <!-- Exportable Table -->            <!-- #END# Exportable Table -->
         </div>
     </section>
 
@@ -236,179 +256,7 @@
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
 
-    
-	
-	<!-- VUE -->
-	<script src="../../js/vue.min.js"></script>
-	<script src="../../js/vue-resource.min.js"></script>
-	
-	<script>
-		
-//		if(typeof(localStorage.theme)!="undefined"){
-//			$('body').removeClass($('body').prop("className"));
-//			$('body').addClass(localStorage.theme);
-//		}
-		
-		function qicao() {
-//			Vue.http.post('http://149.248.21.145:8000/contracts/',{title: "0", date_begin:"1970-01-01", date_end: "1970-01-02", content:"0", clients:[1], author:sessionStorage.id },{emulateJSON:true}).then(function(res){
-//				console.log(res.body);
-//				sessionStorage.contract_id=res.body.id;
-				window.location.href="db-qicao.html";
-//				sessionStorage.role = res.body.role;
-//				sessionStorage.id = res.body.id;
-//				window.location.href='index.html';
-//			},function(res){
-//				console.log(res);
-//			});
-		};
-		
-		
-		function sc(){
-			// 重载js
-			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
-                
-            });
-			
-        };
-	</script>
-	
-	<script>
-		var table = new Vue({
-			el: '#vue',
-			data: {
-					a: [{id: 1, contract: "种猪", user: 1},
-						{id: 2, contract: "ojbk", user: 1}
-					   ],
-					d: [
-						{id: 1, contract: "种猪", user: 1},
-						{id: 2, contract: "ojbk", user: 1}
-					]
-			},
-			methods: {
-				show: function(a, b) {
-					swal({
-						title: b,
-						text: "您的会签意见:",
-						type: "input",
-						showCancelButton: true,
-						closeOnConfirm: false,
-						animation: "slide-from-top",
-						inputPlaceholder: "请你输入您的意见"
-					}, function (inputValue) {
-						if (inputValue === false) return false;
-						if (inputValue === "") {
-							swal.showInputError("您需要输入您的意见!"); return false
-						}
-						swal({
-							title: "完成",
-							text: "您的意见: " + inputValue,
-							type: "success",
-							showCancelButton: false,
-							closeOnConfirm: false
-						}, function () {
-							console.log("refresh");
-							location=location;
-						});
-					});
-				},
-				link: function(a) {
-					console.log("123");
-					window.open(a);
-				},
-				get: function() {
-					$.ajax({
-						type: "GET",
-						url: "http://149.248.21.145:8000/countersigns/",
-						data: {user: sessionStorage.id, is_confirmed: false},
-						dataType: "json",
-						async: false,
-						success: function(data){
-							console.log(data);
-							console.log(table.d);
-							table.d=data;
-							table.a=data;
-							console.log(table.a);
-							table.getall();
-						}
-					});
-				},
-				getall: function() {
-					sessionStorage.id = 3;
-					$.ajax({
-						url: "http://149.248.21.145:8000/contracts/",
-						data: {author:sessionStorage.id, status: "countersigned"},
-						dateType: "json",
-						async: false,
-						success: function(data) {
-							console.log(data);
-							table.d=data;
-//							console.log(table.a);
-//							for (i=0; i<data.length; i++){
-//								for (k=0; k<table.a.length; k++) {
-//									if (data[i].id == table.a[k].contract) {
-//										table.d[k] = data[i];
-//									}
-//								}
-//							}
-							console.log(table.d);
-
-						}
-					});
-				}
-			},
-		});
-		
-		table.getall();
-		
-	</script>
-	
-	<script>
-		var role = sessionStorage.role;
-		var permission = new Vue({
-			el:'#menu',
-			data: {
-				liucheng: false,
-				xinxi: false,
-				xitong: false,
-				data:{
-					id: '',
-					name: '',
-					can_read_contracts: false,
-					can_write_contracts: false,
-					can_countersign: false,
-					can_review: false,
-					can_sign: false,
-					can_distribute: false,
-					can_manage_users: false,
-					can_manage_roles: false,
-					can_manage_clients: false
-				}
-			},
-			methods: {
-				get: function(){
-					// test role
-					 //role = 2;
-					if(role!=null) {
-						//发送 post 请求
-						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-							this.liucheng = true;
-							this.xinxi = true;
-							this.xitong = true;
-							this.data=res.body;
-							sc();
-						},function(res){
-							console.log(res);
-						});
-					}
-				},
-			}
-		});
-		
-		permission.get();
-		
-	</script>
-	
-	<!-- Jquery DataTable Plugin Js -->
+    <!-- Jquery DataTable Plugin Js -->
     <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
     <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
     <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
@@ -420,15 +268,200 @@
     <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 	
 	<!-- SweetAlert Plugin Js -->
-    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>
-<!--	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>-->
-
+<!--    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>-->
+	
+	<!-- SweetAlert 2 -->
+	<script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
     <!-- Custom Js -->
     <script src="../../js/admin.js"></script>
     <script src="../../js/pages/tables/jquery-datatable.js"></script>
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
+	
+	<!-- VUE -->
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/vue-resource.min.js"></script>
+	
+	<script>
+  var contractInfos;
+  $.ajax({
+    url:"http://149.248.21.145:8000/contracts/",//请求的url地址
+    dataType:"json",//返回的格式为json
+    async:false,//请求是否异步，默认true异步，这是ajax的特性
+    data:{"id":"value"},//参数值
+    type:"GET",//请求的方式
+    beforeSend:function(){},//请求前的处理
+    success:function(res){
+      contractInfos = res;
+    },//请求成功的处理
+    complete:function(){},//请求完成的处理
+    error:function(){
+      console.log(res);
+    }//请求出错的处理
+  });
+  $.ajax({
+    url:"http://149.248.21.145:8000/clients/",//请求的url地址
+    dataType:"json",//返回的格式为json
+    async:false,//请求是否异步，默认true异步，这是ajax的特性
+    <!-- data:{"id":"value"},//参数值 -->
+    type:"GET",//请求的方式
+    beforeSend:function(){},//请求前的处理
+    success:function(res){
+      for(i=0,len=res.length;i<len;i++)
+        sessionStorage['client'+res[i].id] = res[i].name;
+      console.log(sessionStorage['client1']);
+    },//请求成功的处理
+    complete:function(){},//请求完成的处理
+    error:function(){
+      console.log(res);
+    }//请求出错的处理
+  });
+  
+  var role = sessionStorage.role;
+  var permission = new Vue({
+    el:'#menu',
+    data: {
+      liucheng: false,
+      xinxi: false,
+      xitong: false,
+      data:{
+        id: '',
+        name: '',
+        can_read_contracts: false,
+        can_write_contracts: false,
+        can_countersign: false,
+        can_review: false,
+        can_sign: false,
+        can_distribute: false,
+        can_manage_users: false,
+        can_manage_roles: false,
+        can_manage_clients: false
+      }
+    },
+    methods: {
+      get: function(){
+        // test role
+         //role = 2;
+        if(role!=null) {
+          //发送 post 请求
+          
+          $.ajax({
+            type: "GET",
+            url: 'http://149.248.21.145:8000/roles/'+role+'/',
+            dataType: "json",
+            async: false,
+            success: function(res){
+              console.log(res);
+              permission.liucheng = true;
+              permission.xinxi = true;
+              permission.xitong = true;
+              permission.data=res;
+              sessionStorage.allPermission = JSON.stringify(permission.data);
+              console.log(permission.data);
+              //sc();
+            },
+            
+          });
+        }
+      },
+    }
+  });
+	permission.get();
+  
+  var table = new Vue({
+    el: '#vue',
+    data: {
+      info:contractInfos,
+    },
+    
+    methods: {
+      openUrl:function(id){
+        this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
+        window.open('http://127.0.0.1:8083/ckfinder/samples/full-page-open.html');
+      },
+      <!-- show: function(id, name,begin,end,content,status) { -->
+        <!-- this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){}); -->
+        <!-- Swal({ -->
+          <!-- title: '<strong>合同信息</strong>', -->
+          <!-- type: 'info', -->
+          <!-- html: -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>名称：</strong></span></p>'+ name + -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>开始时间：</strong></span> </p>'+ begin + -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>结束时间：</strong><br /></span> </p>'+ end + -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>内容：</strong><br /></span> </p>'+ content +  -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong><a onclick="openUrl(\'http://127.0.0.1:8083/ckfinder/samples/full-page-open.html\')">附件</a></strong></span></p>', -->
+          <!-- showCloseButton: true, -->
+          <!-- focusConfirm: false, -->
+          <!-- confirmButtonAriaLabel: 'Thumbs up, great!', -->
+          <!-- confirmButtonText: -->
+            <!-- '<i class="fa fa-thumbs-up"></i> 关闭', -->
+          
+        <!-- }) -->
+      <!-- }, -->
+      update: function(index) {
+        len1 = $(".contractId:eq("+index+")").html().length;
+        len2 = $(".contractContent:eq("+index+")").html().length;
+        alert($(".contractId:eq("+index+")").html().substr(3,len1-7));
+        alert($(".contractContent:eq("+index+")").html().substr('<p contenteditable="true">'.length,len2-4-'<p contenteditable="true">'.length));
+        
+      },
+      delete1: function(id, name) {
+        const swalWithBootstrapButtons = Swal.mixin({
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: true,
+        })
+
+        swalWithBootstrapButtons({
+          title: '确定删除么',
+          text: "删除后不可恢复！",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: '是, 删除',
+          cancelButtonText: '否, 取消',
+          reverseButtons: false
+        }).then((result) => {
+          if (result.value) {
+            console.log('yes');
+            this.$http.delete('http://149.248.21.145:8000/contracts/'+id+'/').then(function(res){
+              swalWithBootstrapButtons(
+              '已删除!',
+              '该合同已被删除',
+              'success'
+              ).then((result) => {
+                location=location;
+              })
+            })
+          } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+          
+            console.log('no');
+            swalWithBootstrapButtons(
+              '已取消',
+              '合同未被删除',
+              'error'
+            )
+          }
+        })
+      },
+      link: function(a) {
+        console.log("123");
+        window.open(a);
+      },
+      getdata: function(){
+        //发送get请求
+        this.$http.get('http://149.248.21.145:8000/clients/').then(function(res){
+          console.log(res);    
+        });
+      },
+    },
+  });
+		
+		table.getdata();
+	</script>
 </body>
 
 </html>
