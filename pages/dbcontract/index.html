@@ -176,24 +176,6 @@
 
     <!-- Jquery Core Js -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core Js -->
-    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
-
-    <!-- Select Plugin Js -->
-    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-    <!-- Slimscroll Plugin Js -->
-    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-
-    <!-- Waves Effect Plugin Js -->
-    <script src="../../plugins/node-waves/waves.js"></script>
-
-    <!-- Custom Js -->
-    <script src="../../js/admin.js"></script>
-
-    <!-- Demo Js -->
-    <script src="../../js/demo.js"></script>
 	
     <!-- Vue -->
     <script src="../../js/vue.min.js"></script>
@@ -253,16 +235,16 @@
 							type: "GET",
 							url: 'http://149.248.21.145:8000/roles/'+role+'/',
 							dataType: "json",
-							async: true,
+							async: false,
 							success: function(res){
 								console.log(res);
-								this.liucheng = true;
-								this.xinxi = true;
-								this.xitong = true;
-								this.data=res;
-								sessionStorage.allPermission = JSON.stringify(this.data);
-								console.log(this.data);
-								sc();
+								permission.liucheng = true;
+								permission.xinxi = true;
+								permission.xitong = true;
+								permission.data=res;
+								sessionStorage.allPermission = JSON.stringify(permission.data);
+								console.log(permission.data);
+								//sc();
 							},
 							
 						});
@@ -286,6 +268,24 @@
 		permission.get();
 		
 	</script>
+	
+	<!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+	
+	<!-- Select Plugin Js -->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+	
+	<!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
 </body>
 
 </html>
