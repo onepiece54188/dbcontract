@@ -1,10 +1,441 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Untitled Document</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>签定合同</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+	
+	<!-- Sweetalert Css -->
+    <!-- <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" /> -->
+
+    <!-- JQuery DataTable Css -->
+    <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
+    
 </head>
 
-<body>
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="index.html">合同管理系统</a>
+            </div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="pull-right"><a href="sign-in.html" class=""><i class="material-icons">input</i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+<section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu" id="menu">
+                <ul class="list">
+                    <li class="header">功能列表</li>
+                    
+                    <li v-if="liucheng">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">trending_down</i>
+                            <span>流程管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_write_contracts">
+                                <a href="db-qicao.html">
+                                    <span>起草合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_countersign">
+                                <a href="db-huiqian.html">
+                                    <span>会签合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_write_contracts">
+                                <a href="db-dinggao.html">
+                                    <span>定稿合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_review">
+                                <a href="db-shenpi.html">
+                                    <span>审批合同</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_sign">
+                                <a href="db-qianding.html">
+                                    <span>签订合同</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+					<li v-if="xinxi">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">event_note</i>
+                            <span>信息管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_read_contracts">
+                                <a href="db-chaxun.html">
+                                    <span>合同查询</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_clients">
+                                <a href="db-kehu.html">
+                                    <span>客户管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+					<li v-if="xitong">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">settings</i>
+                            <span>系统管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li v-if="data.can_distribute">
+                                <a href="db-fenpei.html">
+                                    <span>合同分配</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_users">
+                                <a href="db-yonghu.html">
+                                    <span>用户管理</span>
+                                </a>
+                            </li>
+							<li v-if="data.can_manage_roles">
+                                <a href="db-juese.html">
+                                    <span>角色管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2018 - 2019 <a href="javascript:void(0);">合同管理系统</a>.
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Basic Examples -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                签定合同列表
+                            </h2>
+                            
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive" id="vue">
+                                <table class="table table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>合同名称</th>
+                                            <th>开始时间</th>
+                                            <th>结束时间</th>
+                                            <th>合同内容</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+									<tbody>
+										<template v-for="i in d">
+											<tr>
+                        <td>{{ i.id }}</td>
+												<td>{{ i.title }}</td>
+												<td>{{ i.date_begin }}</td>
+												<td>{{ i.date_end }}</td>
+												<td>{{ i.content }}</td>
+												<td class="align-center row">
+													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
+														<button type="button" @click="show(i.id,i.title,i.countersigns[0].id)" class="btn bg-amber waves-effect">签 定</button>
+													</div>
+												</td>
+											</tr>
+										</template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Basic Examples -->
+        </div>
+    </section>
+    <!-- Jquery Core Js -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+    <!-- SweetAlert 2 -->
+    <script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/tables/jquery-datatable.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+
+	<!-- VUE -->
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/vue-resource.min.js"></script>
+	
+	<script>
+		
+//		if(typeof(localStorage.theme)!="undefined"){
+//			$('body').removeClass($('body').prop("className"));
+//			$('body').addClass(localStorage.theme);
+//		}
+
+		function sc(){
+			// 重载js
+			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){});
+    };
+	</script>
+	
+<script>
+  var role = sessionStorage.role;
+  var permission = new Vue({
+    el:'#menu',
+    data: {
+      liucheng: false,
+      xinxi: false,
+      xitong: false,
+      data:{
+        id: '',
+        name: '',
+        can_read_contracts: false,
+        can_write_contracts: false,
+        can_countersign: false,
+        can_review: false,
+        can_sign: false,
+        can_distribute: false,
+        can_manage_users: false,
+        can_manage_roles: false,
+        can_manage_clients: false
+      }
+    },
+    methods: {
+      get: function(){
+        // test role
+         //role = 2;
+        if(role!=null) {
+          //发送 post 请求
+          $.ajax({
+            type: "GET",
+            url: 'http://149.248.21.145:8000/roles/'+role+'/',
+            dataType: "json",
+            async: false,
+            success: function(res){
+              console.log(res);
+              permission.liucheng = true;
+              permission.xinxi = true;
+              permission.xitong = true;
+              permission.data=res;
+              sessionStorage.allPermission = JSON.stringify(permission.data);
+              console.log(permission.data);
+              //sc();
+            },
+            
+          });
+        }
+      },
+    }
+  });
+  permission.get();
+  
+  var table = new Vue({
+    el: '#vue',
+    data: {
+        a: [{id: 1, contract: "种猪", user: 1},
+          {id: 2, contract: "ojbk", user: 1}
+           ],
+        d: [
+          {id: 1, contract: "种猪", user: 1},
+          {id: 2, contract: "ojbk", user: 1}
+        ]
+    },
+    methods: {
+      show: async function(id, name, counterSignId) {
+        const {value: opinion} = await Swal({
+          title: '会签: '+ name,
+          input: 'textarea',
+          inputPlaceholder: '请输入您的会签意见',
+          showCancelButton: true,
+          confirmButtonText: '提交',
+          cancelButtonText: '取消',
+        });
+        if (opinion) {
+          Swal({
+            title: '确定提交么',
+            text: "您的会签意见为：" + opinion,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+          }).then((result) => {
+            if (result.value) {
+              this.$http.patch('http://149.248.21.145:8000/countersigns/'+counterSignId+'/',{message:opinion,is_confirmed:true}).then(function(res){
+                Swal(
+                  '会签成功',
+                ).then((result) => {
+                  location=location;
+                })
+                
+              });
+            }
+          })
+        }
+      
+        <!-- swal({ -->
+          <!-- title: b, -->
+          <!-- text: "您的会签意见:", -->
+          <!-- type: "input", -->
+          <!-- showCancelButton: true, -->
+          <!-- closeOnConfirm: false, -->
+          <!-- animation: "slide-from-top", -->
+          <!-- inputPlaceholder: "请你输入您的意见" -->
+        <!-- }, function (inputValue) { -->
+          <!-- if (inputValue === false) return false; -->
+          <!-- if (inputValue === "") { -->
+            <!-- swal.showInputError("您需要输入您的意见!"); return false -->
+          <!-- } -->
+          <!-- swal({ -->
+            <!-- title: "完成", -->
+            <!-- text: "您的意见: " + inputValue, -->
+            <!-- type: "success", -->
+            <!-- showCancelButton: false, -->
+            <!-- closeOnConfirm: false -->
+          <!-- }, function () { -->
+            <!-- console.log("refresh"); -->
+            <!-- location=location; -->
+          <!-- }); -->
+        <!-- }); -->
+      },
+      get: function() {
+        $.ajax({
+          type: "GET",
+          url: "http://149.248.21.145:8000/signs/",
+          data: {user: sessionStorage.id, is_confirmed: false},
+          dataType: "json",
+          async: false,
+          success: function(data){
+            table.d=data;
+            table.a=data;
+            table.getall();
+          }
+        });
+      },
+      getall: function() {
+        $.ajax({
+          url: "http://149.248.21.145:8000/contracts/",
+          //data: {status: "reviewed"},
+          dateType: "json",
+          async: false,
+          success: function(data) {
+			  console.log(data);
+            for (i=0; i<data.length; i++){
+              for (k=0; k<table.a.length; k++) {
+                if (data[i].id == table.a[k].contract) {
+                  table.d[k] = data[i];
+                }
+              }
+            }
+          }
+        });
+      }
+    },
+  });
+  
+  table.get();
+  console.log(table.d);
+</script>
 </body>
+
 </html>
