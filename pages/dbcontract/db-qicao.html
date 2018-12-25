@@ -329,14 +329,22 @@
 					 //role = 2;
 					if(role!=null) {
 						//发送 post 请求
-						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-							this.liucheng = true;
-							this.xinxi = true;
-							this.xitong = true;
-							this.data=res.body;
-							sc();
-						},function(res){
-							console.log(res);
+						$.ajax({
+							type: "GET",
+							url: 'http://149.248.21.145:8000/roles/'+role+'/',
+							dataType: "json",
+							async: false,
+							success: function(res){
+								console.log(res);
+								permission.liucheng = true;
+								permission.xinxi = true;
+								permission.xitong = true;
+								permission.data=res;
+								sessionStorage.allPermission = JSON.stringify(permission.data);
+								console.log(permission.data);
+								//sc();
+							},
+							
 						});
 					}
 				},

@@ -22,7 +22,7 @@
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
 	
 	<!-- Sweetalert Css -->
-    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" /> -->
 
     <!-- JQuery DataTable Css -->
     <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
@@ -32,6 +32,9 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
+    
 </head>
 
 <body class="theme-red">
@@ -88,7 +91,7 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_write_contracts">
-                                <a href="javascript:void(0);" onClick="qicao()">
+                                <a href="db-qicao.html">
                                     <span>起草合同</span>
                                 </a>
                             </li>
@@ -180,7 +183,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                BASIC EXAMPLE
+                                会签合同列表
                             </h2>
                             
                         </div>
@@ -189,23 +192,25 @@
                                 <table class="table table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>标题</th>
+                                            <th>序号</th>
+                                            <th>合同名称</th>
                                             <th>开始时间</th>
                                             <th>结束时间</th>
-											<th>内容</th>
-											<th>操作</th>
+                                            <th>合同内容</th>
+                                            <th>操作</th>
                                         </tr>
                                     </thead>
 									<tbody>
 										<template v-for="i in d">
 											<tr>
-												<td><a href="javascript:void(0);" @click="link(i.link)">{{ i.title }}</a></td>
+                        <td>{{ i.id }}</td>
+												<td>{{ i.title }}</td>
 												<td>{{ i.date_begin }}</td>
 												<td>{{ i.date_end }}</td>
 												<td>{{ i.content }}</td>
 												<td class="align-center row">
 													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="show(i.id,i.name)" class="btn bg-amber waves-effect">会 签</button>
+														<button type="button" @click="show(i.id,i.title,i.countersigns[0].id)" class="btn bg-amber waves-effect">会 签</button>
 													</div>
 												</td>
 											</tr>
@@ -220,7 +225,6 @@
             <!-- #END# Basic Examples -->
         </div>
     </section>
-
     <!-- Jquery Core Js -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
 
@@ -235,9 +239,27 @@
 
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
+    <!-- SweetAlert 2 -->
+    <script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
 
-    
-	
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/tables/jquery-datatable.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+
 	<!-- VUE -->
 	<script src="../../js/vue.min.js"></script>
 	<script src="../../js/vue-resource.min.js"></script>
@@ -248,186 +270,171 @@
 //			$('body').removeClass($('body').prop("className"));
 //			$('body').addClass(localStorage.theme);
 //		}
-		
-		function qicao() {
-			Vue.http.post('http://149.248.21.145:8000/contracts/',{title: "0", date_begin:"1970-01-01", date_end: "1970-01-02", content:"0", clients:[1], author:sessionStorage.id },{emulateJSON:true}).then(function(res){
-				console.log(res.body);
-				sessionStorage.contract_id=res.body.id;
-				window.location.href="db-qicao.html";
-//				sessionStorage.role = res.body.role;
-//				sessionStorage.id = res.body.id;
-//				window.location.href='index.html';
-			},function(res){
-				console.log(res);
-			});
-		};
-		
-		
+
 		function sc(){
 			// 重载js
-			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
+			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){});
+    };
+	</script>
+	
+<script>
+  var role = sessionStorage.role;
+  var permission = new Vue({
+    el:'#menu',
+    data: {
+      liucheng: false,
+      xinxi: false,
+      xitong: false,
+      data:{
+        id: '',
+        name: '',
+        can_read_contracts: false,
+        can_write_contracts: false,
+        can_countersign: false,
+        can_review: false,
+        can_sign: false,
+        can_distribute: false,
+        can_manage_users: false,
+        can_manage_roles: false,
+        can_manage_clients: false
+      }
+    },
+    methods: {
+      get: function(){
+        // test role
+         //role = 2;
+        if(role!=null) {
+          //发送 post 请求
+          $.ajax({
+            type: "GET",
+            url: 'http://149.248.21.145:8000/roles/'+role+'/',
+            dataType: "json",
+            async: false,
+            success: function(res){
+              console.log(res);
+              permission.liucheng = true;
+              permission.xinxi = true;
+              permission.xitong = true;
+              permission.data=res;
+              sessionStorage.allPermission = JSON.stringify(permission.data);
+              console.log(permission.data);
+              //sc();
+            },
+            
+          });
+        }
+      },
+    }
+  });
+  permission.get();
+  
+  var table = new Vue({
+    el: '#vue',
+    data: {
+        a: [{id: 1, contract: "种猪", user: 1},
+          {id: 2, contract: "ojbk", user: 1}
+           ],
+        d: [
+          {id: 1, contract: "种猪", user: 1},
+          {id: 2, contract: "ojbk", user: 1}
+        ]
+    },
+    methods: {
+      show: async function(id, name, counterSignId) {
+        const {value: opinion} = await Swal({
+          title: '会签: '+ name,
+          input: 'textarea',
+          inputPlaceholder: '请输入您的会签意见',
+          showCancelButton: true,
+          confirmButtonText: '提交',
+          cancelButtonText: '取消',
+        });
+        if (opinion) {
+          Swal({
+            title: '确定提交么',
+            text: "您的会签意见为：" + opinion,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+          }).then((result) => {
+            if (result.value) {
+              this.$http.patch('http://149.248.21.145:8000/countersigns/'+counterSignId+'/',{message:opinion,is_confirmed:true}).then(function(res){
+                Swal(
+                  '会签成功',
+                ).then((result) => {
+                  location=location;
+                })
                 
-            });
-			
-        };
-	</script>
-	
-	<script>
-		var table = new Vue({
-			el: '#vue',
-			data: {
-					a: [{id: 1, contract: "种猪", user: 1},
-						{id: 2, contract: "ojbk", user: 1}
-					   ],
-					d: [
-						{id: 1, contract: "种猪", user: 1},
-						{id: 2, contract: "ojbk", user: 1}
-					]
-			},
-			methods: {
-				show: function(a, b) {
-					swal({
-						title: b,
-						text: "您的会签意见:",
-						type: "input",
-						showCancelButton: true,
-						closeOnConfirm: false,
-						animation: "slide-from-top",
-						inputPlaceholder: "请你输入您的意见"
-					}, function (inputValue) {
-						if (inputValue === false) return false;
-						if (inputValue === "") {
-							swal.showInputError("您需要输入您的意见!"); return false
-						}
-						swal({
-							title: "完成",
-							text: "您的意见: " + inputValue,
-							type: "success",
-							showCancelButton: false,
-							closeOnConfirm: false
-						}, function () {
-							console.log("refresh");
-							location=location;
-						});
-					});
-				},
-				link: function(a) {
-					console.log("123");
-					window.open(a);
-				},
-				get: function() {
-
-					$.ajax({
-						type: "GET",
-						url: "http://149.248.21.145:8000/countersigns/",
-						data: {user: sessionStorage.id, is_confirmed: false},
-						dataType: "json",
-						async: false,
-						success: function(data){
-							console.log(data);
-							console.log(table.d);
-							table.d=data;
-							table.a=data;
-							console.log(table.a);
-							table.getall();
-						}
-					});
-				},
-				getall: function() {
-					$.ajax({
-						url: "http://149.248.21.145:8000/contracts/",
-						data: {status: "created"},
-						dateType: "json",
-						async: false,
-						success: function(data) {
-							console.log(data);
-							console.log(table.a);
-							for (i=0; i<data.length; i++){
-								for (k=0; k<table.a.length; k++) {
-									if (data[i].id == table.a[k].contract) {
-										table.d[k] = data[i];
-									}
-								}
-							}
-							console.log(table.d);
-
-						}
-					});
-				}
-			},
-		});
-		
-		table.get();
-		
-	</script>
-	
-	<script>
-		var role = sessionStorage.role;
-		var permission = new Vue({
-			el:'#menu',
-			data: {
-				liucheng: false,
-				xinxi: false,
-				xitong: false,
-				data:{
-					id: '',
-					name: '',
-					can_read_contracts: false,
-					can_write_contracts: false,
-					can_countersign: false,
-					can_review: false,
-					can_sign: false,
-					can_distribute: false,
-					can_manage_users: false,
-					can_manage_roles: false,
-					can_manage_clients: false
-				}
-			},
-			methods: {
-				get: function(){
-					// test role
-					 //role = 2;
-					if(role!=null) {
-						//发送 post 请求
-						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-							this.liucheng = true;
-							this.xinxi = true;
-							this.xitong = true;
-							this.data=res.body;
-							sc();
-						},function(res){
-							console.log(res);
-						});
-					}
-				},
-			}
-		});
-		
-		permission.get();
-		
-	</script>
-	
-	<!-- Jquery DataTable Plugin Js -->
-    <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
-    <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-	
-	<!-- SweetAlert Plugin Js -->
-    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>
-<!--	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>-->
-
-    <!-- Custom Js -->
-    <script src="../../js/admin.js"></script>
-    <script src="../../js/pages/tables/jquery-datatable.js"></script>
-
-    <!-- Demo Js -->
-    <script src="../../js/demo.js"></script>
+              });
+            }
+          })
+        }
+      
+        <!-- swal({ -->
+          <!-- title: b, -->
+          <!-- text: "您的会签意见:", -->
+          <!-- type: "input", -->
+          <!-- showCancelButton: true, -->
+          <!-- closeOnConfirm: false, -->
+          <!-- animation: "slide-from-top", -->
+          <!-- inputPlaceholder: "请你输入您的意见" -->
+        <!-- }, function (inputValue) { -->
+          <!-- if (inputValue === false) return false; -->
+          <!-- if (inputValue === "") { -->
+            <!-- swal.showInputError("您需要输入您的意见!"); return false -->
+          <!-- } -->
+          <!-- swal({ -->
+            <!-- title: "完成", -->
+            <!-- text: "您的意见: " + inputValue, -->
+            <!-- type: "success", -->
+            <!-- showCancelButton: false, -->
+            <!-- closeOnConfirm: false -->
+          <!-- }, function () { -->
+            <!-- console.log("refresh"); -->
+            <!-- location=location; -->
+          <!-- }); -->
+        <!-- }); -->
+      },
+      get: function() {
+        $.ajax({
+          type: "GET",
+          url: "http://149.248.21.145:8000/countersigns/",
+          data: {user: sessionStorage.id, is_confirmed: false},
+          dataType: "json",
+          async: false,
+          success: function(data){
+            table.d=data;
+            table.a=data;
+            table.getall();
+          }
+        });
+      },
+      getall: function() {
+        $.ajax({
+          url: "http://149.248.21.145:8000/contracts/",
+          data: {status: "created"},
+          dateType: "json",
+          async: false,
+          success: function(data) {
+            for (i=0; i<data.length; i++){
+              for (k=0; k<table.a.length; k++) {
+                if (data[i].id == table.a[k].contract) {
+                  table.d[k] = data[i];
+                }
+              }
+            }
+          }
+        });
+      }
+    },
+  });
+  
+  table.get();
+  console.log(table.d);
+</script>
 </body>
 
 </html>

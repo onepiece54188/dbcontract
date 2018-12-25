@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Jquery DataTable | Bootstrap Based Admin Template - Material Design</title>
+    <title>查询合同</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -282,7 +282,6 @@
 	
 	<script>
   var contractInfos;
-  
   $.ajax({
     url:"http://149.248.21.145:8000/contracts/",//请求的url地址
     dataType:"json",//返回的格式为json
@@ -297,8 +296,70 @@
     error:function(){
       console.log(res);
     }//请求出错的处理
-   
   });
+  
+  var role = sessionStorage.role;
+  var permission = new Vue({
+    el:'#menu',
+    data: {
+      liucheng: false,
+      xinxi: false,
+      xitong: false,
+      data:{
+        id: '',
+        name: '',
+        can_read_contracts: false,
+        can_write_contracts: false,
+        can_countersign: false,
+        can_review: false,
+        can_sign: false,
+        can_distribute: false,
+        can_manage_users: false,
+        can_manage_roles: false,
+        can_manage_clients: false
+      }
+    },
+    methods: {
+      get: function(){
+        // test role
+         //role = 2;
+        if(role!=null) {
+          //发送 post 请求
+          
+          $.ajax({
+            type: "GET",
+            url: 'http://149.248.21.145:8000/roles/'+role+'/',
+            dataType: "json",
+            async: false,
+            success: function(res){
+              console.log(res);
+              permission.liucheng = true;
+              permission.xinxi = true;
+              permission.xitong = true;
+              permission.data=res;
+              sessionStorage.allPermission = JSON.stringify(permission.data);
+              console.log(permission.data);
+              //sc();
+            },
+            
+          });
+//						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
+//							this.liucheng = true;
+//							this.xinxi = true;
+//							this.xitong = true;
+//							this.data=res.body;
+//              sessionStorage.allPermission = JSON.stringify(this.data);
+//              /*var obj = JSON.parse(sessionStorage.allPermission);
+//              console.log(obj.can_read_contracts);测试session如何存储对象*/
+//							sc();
+//						},function(res){
+//							console.log(res);
+//						});
+        }
+      },
+    }
+  });
+	permission.get();
   
   var table = new Vue({
     el: '#vue',
@@ -356,7 +417,9 @@
               '已删除!',
               '该合同已被删除',
               'success'
-              )
+              ).then((result) => {
+                location=location;
+              })
             })
           } else if (
             // Read more about handling dismissals
