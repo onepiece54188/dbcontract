@@ -45,7 +45,7 @@ $(function () {
 
     //Multi-select
     $('#optgroup').multiSelect({ selectableOptgroup: true });
-	$('#huiqian').multiSelect({ selectableOptgroup: true });
+	$('#huiqian').multiSelect({});
 	$('#shenpi').multiSelect({ selectableOptgroup: true });
 	$('#qianding').multiSelect({ selectableOptgroup: true });
 
