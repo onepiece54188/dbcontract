@@ -203,6 +203,9 @@
                                         <tr>
                                             <th>序号</th>
                                             <th>合同名称</th>
+                                            <th>开始时间</th>
+                                            <th>结束时间</th>
+                                            <th>合同内容</th>
                                             <th>操作</th>
                                         </tr>
                                     </thead>
@@ -211,9 +214,12 @@
                                         <tr>
                                           <td><p contenteditable="true">{{ i.id }}</p></td>
                                           <td><p contenteditable="true">{{ i.title }}</p></td>
+                                          <td><p contenteditable="true">{{ i.date_begin }}</p></td>
+                                          <td><p contenteditable="true">{{ i.date_end }}</p></td>
+                                          <td><p contenteditable="true">{{ i.content }}</p></td>
                                           <td class="align-left row">
                                             <div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-                                              <button type="button" @click="show(i.id,i.title,i.date_begin,i.date_end,i.content,i.status)" class="btn bg-blue waves-effect">查看</button>
+                                              <button type="button" @click="openUrl(i.id)" class="btn bg-blue waves-effect">查看附件</button>
                                               <!-- <button type="button" @click="update(i.id,i.name)" class="btn bg-amber waves-effect">修 改</button> -->
                                               <button type="button" @click="delete1(i.id,i.title)" class="btn bg-red waves-effect">删 除</button>
                                             </div>
@@ -294,9 +300,6 @@
    
   });
   
-  function openUrl(url){
-            window.open(url);
-    };
   var table = new Vue({
     el: '#vue',
     data: {
@@ -304,28 +307,32 @@
     },
     
     methods: {
-      show: function(id, name,begin,end,content,status) {
+      openUrl:function(id){
         this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
-        Swal({
-          title: '<strong>合同信息</strong>',
-          type: 'info',
-          html:
-            '<p align="left"><span style="font-size:14px;"><strong>名称：</strong></span></p>'+ name +
-            '<p align="left"><span style="font-size:14px;"><strong>开始时间：</strong></span> </p>'+ begin +
-            '<p align="left"><span style="font-size:14px;"><strong>结束时间：</strong><br /></span> </p>'+ end +
-            '<p align="left"><span style="font-size:14px;"><strong>内容：</strong><br /></span> </p>'+ content + 
-            '<p align="left"><span style="font-size:14px;"><strong><a onclick="openUrl(\'http://127.0.0.1:8083/ckfinder/samples/full-page-open.html\')">附件</a></strong></span></p>',
-          showCloseButton: true,
-          focusConfirm: false,
-          confirmButtonAriaLabel: 'Thumbs up, great!',
-          confirmButtonText:
-            '<i class="fa fa-thumbs-up"></i> 关闭',
+        window.open('http://127.0.0.1:8083/ckfinder/samples/full-page-open.html');
+      },
+      <!-- show: function(id, name,begin,end,content,status) { -->
+        <!-- this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){}); -->
+        <!-- Swal({ -->
+          <!-- title: '<strong>合同信息</strong>', -->
+          <!-- type: 'info', -->
+          <!-- html: -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>名称：</strong></span></p>'+ name + -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>开始时间：</strong></span> </p>'+ begin + -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>结束时间：</strong><br /></span> </p>'+ end + -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong>内容：</strong><br /></span> </p>'+ content +  -->
+            <!-- '<p align="left"><span style="font-size:14px;"><strong><a onclick="openUrl(\'http://127.0.0.1:8083/ckfinder/samples/full-page-open.html\')">附件</a></strong></span></p>', -->
+          <!-- showCloseButton: true, -->
+          <!-- focusConfirm: false, -->
+          <!-- confirmButtonAriaLabel: 'Thumbs up, great!', -->
+          <!-- confirmButtonText: -->
+            <!-- '<i class="fa fa-thumbs-up"></i> 关闭', -->
           
-        })
-      },
-      update: function(id, name) {
+        <!-- }) -->
+      <!-- }, -->
+      <!-- update: function(id, name) { -->
         
-      },
+      <!-- }, -->
       delete1: function(id, name) {
         const swalWithBootstrapButtons = Swal.mixin({
           confirmButtonClass: 'btn btn-success',
