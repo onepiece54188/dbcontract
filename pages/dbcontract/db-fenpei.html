@@ -220,7 +220,7 @@
                         </div>
 						<div class="body">
 							<h4>分配签定人</h4>
-                            <select class="ms optgroup" multiple="multiple" id="qianding">
+                            <select v-modle="qianding" class="ms optgroup" multiple="multiple" id="qianding">
                                 <optgroup label="Eastern Time Zone">
                                     <option value="CT">Connecticut</option>
                                     <option value="DE">Delaware</option>
@@ -231,7 +231,7 @@
                             </select>
                         </div>
 						<div class="body">
-							<button type="button" class="btn btn-primary waves-effect">确 定</button>
+							<button @click="send()" type="button" class="btn btn-primary waves-effect">确 定</button>
 						</div>
 						<br>
                     </div>
@@ -363,7 +363,7 @@
 	
 	<script>
 		var main = new Vue({
-			el: "main",
+			el: "#main",
 			data: {
 				huiqian: [],
 				shenpi: [],
