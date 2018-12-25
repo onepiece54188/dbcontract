@@ -333,21 +333,23 @@
 					});
 				},
 				getall: function() {
+					sessionStorage.id = 3;
 					$.ajax({
 						url: "http://149.248.21.145:8000/contracts/",
-						data: {status: "countersigned"},
+						data: {author:sessionStorage.id, status: "countersigned"},
 						dateType: "json",
 						async: false,
 						success: function(data) {
 							console.log(data);
-							console.log(table.a);
-							for (i=0; i<data.length; i++){
-								for (k=0; k<table.a.length; k++) {
-									if (data[i].id == table.a[k].contract) {
-										table.d[k] = data[i];
-									}
-								}
-							}
+							table.d=data;
+//							console.log(table.a);
+//							for (i=0; i<data.length; i++){
+//								for (k=0; k<table.a.length; k++) {
+//									if (data[i].id == table.a[k].contract) {
+//										table.d[k] = data[i];
+//									}
+//								}
+//							}
 							console.log(table.d);
 
 						}
@@ -356,7 +358,7 @@
 			},
 		});
 		
-		table.get();
+		table.getall();
 		
 	</script>
 	
