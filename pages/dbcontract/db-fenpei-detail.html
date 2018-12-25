@@ -20,20 +20,33 @@
 
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
-	
-	<!-- Sweetalert Css -->
-    <!-- <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" /> -->
 
-    <!-- JQuery DataTable Css -->
-    <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- Colorpicker Css -->
+    <link href="../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link href="../../plugins/dropzone/dropzone.css" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link href="../../plugins/multi-select/css/multi-select.css" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link href="../../plugins/jquery-spinner/css/bootstrap-spinner.css" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link href="../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link href="../../plugins/nouislider/nouislider.min.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
-    
-    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
 </head>
 
 <body class="theme-red">
@@ -176,57 +189,48 @@
 
     <section class="content">
         <div class="container-fluid">
-            <!-- Basic Examples -->
+            <!-- Multi Select -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                分配合同列表
-                            </h2>
-                            
-                        </div>
+                    <div class="card" id="main">
+						
                         <div class="body">
-                            <div class="table-responsive" id="vue">
-                                <table class="table table-striped table-hover js-basic-example dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>合同名称</th>
-                                            <th>开始时间</th>
-                                            <th>结束时间</th>
-                                            <th>合同内容</th>
-                                            <th>操作</th>
-                                        </tr>
-                                    </thead>
-									<tbody>
-										<template v-for="i in d">
-											<tr>
-                        						<td>{{ i.id }}</td>
-												<td>{{ i.title }}</td>
-												<td>{{ i.date_begin }}</td>
-												<td>{{ i.date_end }}</td>
-												<td>{{ i.content }}</td>
-												<td class="align-center row">
-													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="dist(i.id)" class="btn bg-amber waves-effect">分 配</button>
-													</div>
-												</td>
-											</tr>
-										</template>
-                                    </tbody>
-                                </table>
-                            </div>
+							<h4>分配会签人</h4>
+                            <select id="huiqian" class="ms" multiple="multiple" id="huiqian">
+								
+                            </select>
                         </div>
+						<div class="body">
+							<h4>分配审批人</h4>
+                            <select id="shenpi" class="ms optgroup" multiple="multiple" id="shenpi">
+                                
+                            </select>
+                        </div>
+						<div class="body">
+							<h4>分配签定人</h4>
+                            <select id="qianding" class="ms optgroup" multiple="multiple" id="qianding">
+                                
+                            </select>
+                        </div>
+						<div class="body">
+							<button @click="send()" type="button" class="btn btn-primary waves-effect">确 定</button>
+						</div>
+						<br>
                     </div>
+                    
                 </div>
+                
             </div>
-            <!-- #END# Basic Examples -->
+            
+            <!-- #END# Multi Select -->
         </div>
     </section>
 
     <!-- Jquery Core Js -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Multi Select Plugin Js -->
+    <script src="../../plugins/multi-select/js/jquery.multi-select.js"></script>
 	
     <!-- Vue -->
     <script src="../../js/vue.min.js"></script>
@@ -281,7 +285,6 @@
 					 //role = 2;
 					if(role!=null) {
 						//发送 post 请求
-						
 						$.ajax({
 							type: "GET",
 							url: 'http://149.248.21.145:8000/roles/'+role+'/',
@@ -299,18 +302,6 @@
 							},
 							
 						});
-//						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-//							this.liucheng = true;
-//							this.xinxi = true;
-//							this.xitong = true;
-//							this.data=res.body;
-//              sessionStorage.allPermission = JSON.stringify(this.data);
-//              /*var obj = JSON.parse(sessionStorage.allPermission);
-//              console.log(obj.can_read_contracts);测试session如何存储对象*/
-//							sc();
-//						},function(res){
-//							console.log(res);
-//						});
 					}
 				},
 			}
@@ -318,42 +309,155 @@
 		
 		permission.get();
 		
-		var table = new Vue({
-			el: '#vue',
-			data: {
-				d:[],
+	</script>
+	
+	<script>
+		console.log("cid: "+sessionStorage.contractid);
+		var huiqian = new Vue({
+			el: '',
+			data:{
+				
 			},
 			methods: {
-				get: function() {
-					//发送get请求
-//					this.$http.get('http://149.248.21.145:8000/contracts/',{status: "created"}).then(function(res){
-//						this.d=res.body;
-//						console.log(res.body);    
-//					},function(){
-//						console.log('请求失败处理');
-//					});
-					
-					$.ajax({
-						type: "GET", 
-       					url: "http://149.248.21.145:8000/contracts/",
-						data: {status: "created"},
-       					async:false, 
-        				dataType: "json", 
-						success: function(res){
-							console.log(res);
-							table.d=res;
-						} 
+				getrole: function() {
+					this.$http.get('http://149.248.21.145:8000/roles/?can_countersign=true',{emulateJSON:true}).then(function(res) {
+						console.log(res.body);
+						for(i=0; i<res.body.length; i++) {
+							this.$http.get('http://149.248.21.145:8000/users/?role='+res.body[i].id,{emulateJSON:true}).then(function(res) {
+								console.log(res.body);
+								for(k=0; k<res.body.length; k++) {
+									
+									console.log(res.body[k]);
+									$('#huiqian').multiSelect('addOption', { value: res.body[k].id, text: res.body[k].username });
+								}
+								
+							})
+						}
 					});
-				},
-				dist: function(id) {
-					sessionStorage.contractid=id;
-					console.log(sessionStorage.contractid);
-					window.location.href="db-fenpei-detail.html";
+				}
+			}
+		});
+		
+		huiqian.getrole();
+		
+		var shenpi = new Vue({
+			el: '',
+			data:{
+				
+			},
+			methods: {
+				getrole: function() {
+					this.$http.get('http://149.248.21.145:8000/roles/?can_review=true',{emulateJSON:true}).then(function(res) {
+						console.log(res.body);
+						for(i=0; i<res.body.length; i++) {
+							this.$http.get('http://149.248.21.145:8000/users/?role='+res.body[i].id,{emulateJSON:true}).then(function(res) {
+								console.log(res.body);
+								for(k=0; k<res.body.length; k++) {
+									
+									console.log(res.body[k]);
+									$('#shenpi').multiSelect('addOption', { value: res.body[k].id, text: res.body[k].username });
+								}
+								
+							})
+						}
+					});
+				}
+			}
+		});
+		
+		shenpi.getrole();
+		
+		var qianding = new Vue({
+			el: '',
+			data:{
+				
+			},
+			methods: {
+				getrole: function() {
+					this.$http.get('http://149.248.21.145:8000/roles/?can_sign=true',{emulateJSON:true}).then(function(res) {
+						console.log(res.body);
+						for(i=0; i<res.body.length; i++) {
+							this.$http.get('http://149.248.21.145:8000/users/?role='+res.body[i].id,{emulateJSON:true}).then(function(res) {
+								console.log(res.body);
+								for(k=0; k<res.body.length; k++) {
+									
+									console.log(res.body[k]);
+									$('#qianding').multiSelect('addOption', { value: res.body[k].id, text: res.body[k].username });
+								}
+								
+							})
+						}
+					});
+				}
+			}
+		});
+		
+		qianding.getrole();
+		
+		
+	</script>
+	
+	<script>
+		var main = new Vue({
+			el: "#main",
+			data: {
+				huiqian: [],
+				shenpi: [],
+				qianding: [],
+			},
+			methods: {
+				
+				send: function(){
+					//sessionStorage.contractid=27;
+					this.huiqian=$("#huiqian").val();
+					this.shenpi=$("#shenpi").val();
+					this.qianding=$("#qianding").val();
+					//发送 post 请求
+					for(i=0; i<this.huiqian.length; i++) {
+						console.log(this.huiqian[i]);
+						this.$http.post('http://149.248.21.145:8000/countersigns/',{user: this.huiqian[i],contract: sessionStorage.contractid},{emulateJSON:true}).then(function(res){
+							console.log(res.body);   
+						},function(res){
+							console.log(res.body);
+						});
+					}
+					
+					for(i=0; i<this.shenpi.length; i++) {
+						console.log(this.shenpi[i]);
+						this.$http.post('http://149.248.21.145:8000/reviews/',{user: this.shenpi[i],contract: sessionStorage.contractid},{emulateJSON:true}).then(function(res){
+							console.log(res.body);   
+						},function(res){
+							console.log(res.body);
+						});
+					}
+					
+					for(i=0; i<this.qianding.length; i++) {
+						console.log(this.qianding[i]);
+						this.$http.post('http://149.248.21.145:8000/signs/',{user: this.qianding[i],contract: sessionStorage.contractid},{emulateJSON:true}).then(function(res){
+							console.log(res.body);   
+						},function(res){
+							console.log(res.body);
+						});
+					}
+					
+					//发送petch请求
+					this.$http.patch('http://149.248.21.145:8000/signs/'+sessionStorage.contractid+'/', {id: sessionStorage.contractid, status: "distributed"}, {emulateJSON:true}).then(function(res){
+						console.log(res.body);    
+					},function(){
+						console.log('请求失败处理');
+					});
+					
+					
+					console.log(this.$data);
+					//.location.href="db-fenpei.html";
 				}
 			}
 		})
-		
-		table.get();
+	</script>
+	
+	<script>
+
+
 	</script>
 	
 	<!-- Bootstrap Core Js -->
@@ -365,28 +469,34 @@
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
+    <!-- Bootstrap Colorpicker Js -->
+    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+    <!-- Dropzone Plugin Js -->
+    <script src="../../plugins/dropzone/dropzone.js"></script>
+
+    <!-- Input Mask Plugin Js -->
+    <script src="../../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+    <!-- Jquery Spinner Plugin Js -->
+    <script src="../../plugins/jquery-spinner/js/jquery.spinner.js"></script>
+
+    <!-- Bootstrap Tags Input Plugin Js -->
+    <script src="../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+    <!-- noUISlider Plugin Js -->
+    <script src="../../plugins/nouislider/nouislider.js"></script>
+
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
-    <!-- SweetAlert 2 -->
-    <script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
-
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
-    <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-    <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
     <!-- Custom Js -->
     <script src="../../js/admin.js"></script>
-    <script src="../../js/pages/tables/jquery-datatable.js"></script>
+    <script src="../../js/pages/forms/advanced-form-elements.js"></script>
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
+	
 </body>
 
 </html>
