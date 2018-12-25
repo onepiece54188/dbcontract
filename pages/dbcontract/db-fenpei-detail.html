@@ -312,6 +312,7 @@
 	</script>
 	
 	<script>
+		console.log("cid: "+sessionStorage.contractid);
 		var huiqian = new Vue({
 			el: '',
 			data:{
@@ -440,7 +441,7 @@
 					}
 					
 					//发送petch请求
-					this.$http.petch('http://149.248.21.145:8000/signs/'+sessionStorage.contractid+'/', {status: "distributed"}, {emulateJSON:true}).then(function(res){
+					this.$http.patch('http://149.248.21.145:8000/signs/'+sessionStorage.contractid+'/', {id: sessionStorage.contractid, status: "distributed"}, {emulateJSON:true}).then(function(res){
 						console.log(res.body);    
 					},function(){
 						console.log('请求失败处理');
@@ -448,7 +449,7 @@
 					
 					
 					console.log(this.$data);
-					window.location.href="db-fenpei.html";
+					//.location.href="db-fenpei.html";
 				}
 			}
 		})
