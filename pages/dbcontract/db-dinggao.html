@@ -206,7 +206,7 @@
                                             <th>客户</th>
                                             <th>开始时间</th>
                                             <th>结束时间</th>
-                                            <th>合同内容</th>
+                                            <th>合同内容(点击修改)</th>
                                             <th>操作</th>
                                         </tr>
                                     </thead>
@@ -289,7 +289,7 @@
     url:"http://149.248.21.145:8000/contracts/",//请求的url地址
     dataType:"json",//返回的格式为json
     async:false,//请求是否异步，默认true异步，这是ajax的特性
-    data:{"id":"value"},//参数值
+    data:{status:"countersigned"},//参数值
     type:"GET",//请求的方式
     beforeSend:function(){},//请求前的处理
     success:function(res){
@@ -402,9 +402,28 @@
       update: function(index) {
         len1 = $(".contractId:eq("+index+")").html().length;
         len2 = $(".contractContent:eq("+index+")").html().length;
-        alert($(".contractId:eq("+index+")").html().substr(3,len1-7));
-        alert($(".contractContent:eq("+index+")").html().substr('<p contenteditable="true">'.length,len2-4-'<p contenteditable="true">'.length));
-        
+        contractId = $(".contractId:eq("+index+")").html().substr(3,len1-7);
+        contractContent = $(".contractContent:eq("+index+")").html().substr('<p contenteditable="true">'.length,len2-4-'<p contenteditable="true">'.length);
+        Swal({
+            title: '确定提交么',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+          }).then((result) => {
+            if (result.value) {
+              this.$http.patch('http://149.248.21.145:8000/contracts/'+contractId+'/',{content:contractContent,status:'rewrited'}).then(function(res){
+                Swal(
+                  '定稿成功',
+                ).then((result) => {
+                  location=location;
+                })
+                
+              });
+            }
+          })
       },
       delete1: function(id, name) {
         const swalWithBootstrapButtons = Swal.mixin({
