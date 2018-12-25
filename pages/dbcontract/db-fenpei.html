@@ -196,19 +196,15 @@
 						
                         <div class="body">
 							<h4>分配会签人</h4>
-                            <select v-model="huiqian" class="ms optgroup" multiple="multiple" id="huiqian">
+                            <select id="huiqian" class="ms" multiple="multiple" id="huiqian">
                                 <optgroup label="Eastern Time Zone">
-                                    <option value="CT">Connecticut</option>
-                                    <option value="DE">Delaware</option>
-                                    <option value="FL">Florida</option>
-                                    <option value="GA">Georgia</option>
-                                    <option value="IN">Indiana</option>
+                                    <option value="CT" disabledd>Connecticut</option>
                                 </optgroup>
                             </select>
                         </div>
 						<div class="body">
 							<h4>分配审批人</h4>
-                            <select v-model="shenpi" class="ms optgroup" multiple="multiple" id="shenpi">
+                            <select id="shenpi" class="ms optgroup" multiple="multiple" id="shenpi">
                                 <optgroup label="Eastern Time Zone">
                                     <option value="CT">Connecticut</option>
                                     <option value="DE">Delaware</option>
@@ -220,7 +216,7 @@
                         </div>
 						<div class="body">
 							<h4>分配签定人</h4>
-                            <select v-modle="qianding" class="ms optgroup" multiple="multiple" id="qianding">
+                            <select id="qianding" class="ms optgroup" multiple="multiple" id="qianding">
                                 <optgroup label="Eastern Time Zone">
                                     <option value="CT">Connecticut</option>
                                     <option value="DE">Delaware</option>
@@ -247,45 +243,8 @@
     <!-- Jquery Core Js -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
 
-    <!-- Bootstrap Core Js -->
-    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
-
-    <!-- Select Plugin Js -->
-    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-    <!-- Slimscroll Plugin Js -->
-    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-
-    <!-- Bootstrap Colorpicker Js -->
-    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-
-    <!-- Dropzone Plugin Js -->
-    <script src="../../plugins/dropzone/dropzone.js"></script>
-
-    <!-- Input Mask Plugin Js -->
-    <script src="../../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-
     <!-- Multi Select Plugin Js -->
     <script src="../../plugins/multi-select/js/jquery.multi-select.js"></script>
-
-    <!-- Jquery Spinner Plugin Js -->
-    <script src="../../plugins/jquery-spinner/js/jquery.spinner.js"></script>
-
-    <!-- Bootstrap Tags Input Plugin Js -->
-    <script src="../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-
-    <!-- noUISlider Plugin Js -->
-    <script src="../../plugins/nouislider/nouislider.js"></script>
-
-    <!-- Waves Effect Plugin Js -->
-    <script src="../../plugins/node-waves/waves.js"></script>
-
-    <!-- Custom Js -->
-    <script src="../../js/admin.js"></script>
-    <script src="../../js/pages/forms/advanced-form-elements.js"></script>
-
-    <!-- Demo Js -->
-    <script src="../../js/demo.js"></script>
 	
     <!-- Vue -->
     <script src="../../js/vue.min.js"></script>
@@ -340,17 +299,22 @@
 					 //role = 2;
 					if(role!=null) {
 						//发送 post 请求
-						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-							this.liucheng = true;
-							this.xinxi = true;
-							this.xitong = true;
-							this.data=res.body;
-              sessionStorage.allPermission = JSON.stringify(this.data);
-              /*var obj = JSON.parse(sessionStorage.allPermission);
-              console.log(obj.can_read_contracts);测试session如何存储对象*/
-							sc();
-						},function(res){
-							console.log(res);
+						$.ajax({
+							type: "GET",
+							url: 'http://149.248.21.145:8000/roles/'+role+'/',
+							dataType: "json",
+							async: false,
+							success: function(res){
+								console.log(res);
+								permission.liucheng = true;
+								permission.xinxi = true;
+								permission.xitong = true;
+								permission.data=res;
+								sessionStorage.allPermission = JSON.stringify(permission.data);
+								console.log(permission.data);
+								//sc();
+							},
+							
 						});
 					}
 				},
@@ -359,6 +323,35 @@
 		
 		permission.get();
 		
+	</script>
+	
+	<script>
+		var huiqian = new Vue({
+			el: '',
+			data:{
+				
+			},
+			methods: {
+				getrole: function() {
+					this.$http.get('http://149.248.21.145:8000/roles/?can_countersign=true',{emulateJSON:true}).then(function(res) {
+						console.log(res.body);
+						for(i in res.body) {
+							this.$http.get('http://149.248.21.145:8000/users/?role=3',{emulateJSON:true}).then(function(res) {
+								console.log(res.body);
+								for(k=0; k<res.body.length; k++) {
+									
+									console.log(res.body[k]);
+									$('#huiqian').multiSelect('addOption', { value: res.body[k].id, text: res.body[k].username });
+								}
+								
+							})
+						}
+					});
+				}
+			}
+		});
+		
+		huiqian.getrole();
 	</script>
 	
 	<script>
@@ -371,11 +364,57 @@
 			},
 			methods: {
 				send: function(){
-					console.log(this.huiqian);
+					this.huiqian=$("#huiqian").val();
+					this.shenpi=$("#shenpi").val();
+					this.qianding=$("#qianding").val();
+					console.log(this.$data);
 				}
 			}
 		})
 	</script>
+	
+	<script>
+
+
+	</script>
+	
+	<!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Bootstrap Colorpicker Js -->
+    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+    <!-- Dropzone Plugin Js -->
+    <script src="../../plugins/dropzone/dropzone.js"></script>
+
+    <!-- Input Mask Plugin Js -->
+    <script src="../../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+    <!-- Jquery Spinner Plugin Js -->
+    <script src="../../plugins/jquery-spinner/js/jquery.spinner.js"></script>
+
+    <!-- Bootstrap Tags Input Plugin Js -->
+    <script src="../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+    <!-- noUISlider Plugin Js -->
+    <script src="../../plugins/nouislider/nouislider.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/forms/advanced-form-elements.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+	
 </body>
 
 </html>
