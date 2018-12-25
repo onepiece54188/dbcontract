@@ -195,9 +195,9 @@
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
 	
-	<!-- Vue -->
-	<script src="../../js/vue.min.js"></script>
-	<script src="../../js/vue-resource.min.js"></script>
+    <!-- Vue -->
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/vue-resource.min.js"></script>
 	
 	<script>
 		
@@ -207,16 +207,7 @@
 //		}
 		
 		function qicao() {
-			Vue.http.post('http://149.248.21.145:8000/contracts/',{title: "0", date_begin:"1970-01-01", date_end: "1970-01-02", content:"0", clients:[1], author:sessionStorage.id },{emulateJSON:true}).then(function(res){
-				console.log(res.body);
-				sessionStorage.contract_id=res.body.id;
-				window.location.href="db-qicao.html";
-//				sessionStorage.role = res.body.role;
-//				sessionStorage.id = res.body.id;
-//				window.location.href='index.html';
-			},function(res){
-				console.log(res);
-			});
+			window.location.href="db-qicao.html";
 		};
 		
 		
@@ -262,6 +253,9 @@
 							this.xinxi = true;
 							this.xitong = true;
 							this.data=res.body;
+              sessionStorage.allPermission = JSON.stringify(this.data);
+              /*var obj = JSON.parse(sessionStorage.allPermission);
+              console.log(obj.can_read_contracts);测试session如何存储对象*/
 							sc();
 						},function(res){
 							console.log(res);

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Blank Page | Bootstrap Based Admin Template - Material Design</title>
+    <title>Form Validation | Bootstrap Based Admin Template - Material Design</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -20,10 +20,13 @@
 
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
-	
-	<!-- Bootstrap Select Css -->
-    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
+    <!-- Sweet Alert Css -->
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.css" rel="stylesheet" />
+
+    <!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
 
@@ -33,7 +36,7 @@
 
 <body class="theme-red">
     <!-- Page Loader -->
-    <div class="page-loader-wrapper">
+<div class="page-loader-wrapper">
         <div class="loader">
             <div class="preloader">
                 <div class="spinner-layer pl-red">
@@ -50,9 +53,9 @@
     </div>
     <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
+<div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
-
+    
     <!-- Top Bar -->
     <nav class="navbar">
         <div class="container-fluid">
@@ -78,74 +81,74 @@
                 <ul class="list">
                     <li class="header">功能列表</li>
                     
-                    <li v-if="liucheng">
+                    <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">trending_down</i>
                             <span>流程管理</span>
                         </a>
                         <ul class="ml-menu">
-                            <li v-if="data.can_write_contracts">
+                            <li v-if="can_write_contracts">
                                 <a href="javascript:void(0);" onClick="qicao()">
                                     <span>起草合同</span>
                                 </a>
                             </li>
-							<li v-if="data.can_countersign">
+							<li v-if="can_countersign">
                                 <a href="db-huiqian.html">
                                     <span>会签合同</span>
                                 </a>
                             </li>
-							<li v-if="data.can_write_contracts">
+							<li v-if="can_write_contracts">
                                 <a href="db-dinggao.html">
                                     <span>定稿合同</span>
                                 </a>
                             </li>
-							<li v-if="data.can_review">
+							<li v-if="can_review">
                                 <a href="db-shenpi.html">
                                     <span>审批合同</span>
                                 </a>
                             </li>
-							<li v-if="data.can_sign">
+							<li v-if="can_sign">
                                 <a href="db-qianding.html">
                                     <span>签订合同</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-					<li v-if="xinxi">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">event_note</i>
                             <span>信息管理</span>
                         </a>
                         <ul class="ml-menu">
-                            <li v-if="data.can_read_contracts">
+                            <li v-if="can_read_contracts">
                                 <a href="db-chaxun.html">
                                     <span>合同查询</span>
                                 </a>
                             </li>
-							<li v-if="data.can_manage_clients">
+							<li v-if="can_manage_clients">
                                 <a href="db-kehu.html">
                                     <span>客户管理</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-					<li v-if="xitong">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">settings</i>
                             <span>系统管理</span>
                         </a>
                         <ul class="ml-menu">
-                            <li v-if="data.can_distribute">
+                            <li v-if="can_distribute">
                                 <a href="db-fenpei.html">
                                     <span>合同分配</span>
                                 </a>
                             </li>
-							<li v-if="data.can_manage_users">
+							<li v-if="can_manage_users">
                                 <a href="db-yonghu.html">
                                     <span>用户管理</span>
                                 </a>
                             </li>
-							<li v-if="data.can_manage_roles">
+							<li v-if="can_manage_roles">
                                 <a href="db-juese.html">
                                     <span>角色管理</span>
                                 </a>
@@ -172,8 +175,12 @@
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-                <h2>BLANK PAGE</h2>
+                <h2>
+                    FORM VALIDATION
+                    <small>Taken from <a href="https://jqueryvalidation.org/" target="_blank">jqueryvalidation.org</a></small>
+                </h2>
             </div>
+			
 			
 			<!-- Basic Validation -->
             <div class="row clearfix">
@@ -186,32 +193,36 @@
                             <form id="form_validation" method="POST">
                             
                                 <div class="form-group">
-									<label class="form-label">合同名称*</label>
+                            <label class="form-label">合同名称*</label>
                                     <div class="form-line">
-                                        <input v-model="title" type="text" class="form-control" name="name" placeholder="请输入合同名称" required>
+                                        <input type="text" class="form-control" name="name" placeholder="请输入合同名称" required>
                                         
                                     </div>
                                 </div>
                             
-                                <div class="form-group">
-                                    <label class="form-label">客户</label>
-                                    <div class="row clearfix">
-										<div class="col-sm-6" id="clients">
-											<select v-model="clientIds" class="form-control show-tick" id="select">
-
-												<template v-for="i in clients">
-													<option :value="i.id">{{ i.name }}</option>
-												</template>
-											</select>
-										</div>
-                            		</div>
-                            	</div>
+                            <div class="form-group">
+                              <label class="form-label">客户</label>
+                              <div class="row clearfix">
+                                <div class="col-lg-6" id="clients">
+                                
+                                  <select class="form-control show-tick">
+                                    <option value="">-- Please select --</option>
+                                    
+                                    <template v-for="item in clientInfos">
+                                     <!-- <template v-for="(info,index) in item":key = "info.id"> -->
+                                      <option value="1">1</option>
+                                      <!-- </template> -->
+                                    </template>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
                                 <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label">开始时间*</label>
                                     <div class="form-line">
-                                        <input v-model="date_begin" type="date" class="form-control" name="name" required>
+                                        <input type="date" class="form-control" name="name" required>
                                         
                                     </div>
                                 </div>
@@ -221,7 +232,7 @@
 								<div class="form-group">
 									<label class="form-label">结束时间*</label>
                                     <div class="form-line">
-                                        <input v-model="date_end" type="date" class="form-control" name="name" required>
+                                        <input type="date" class="form-control" name="name" required>
                                         
                                     </div>
                                 </div>
@@ -229,7 +240,7 @@
                             </div>
 								<div class="form-group form-float">
                                     <div class="form-line">
-                                        <textarea v-model="content" name="description" cols="30" rows="5" class="form-control no-resize" required></textarea>
+                                        <textarea name="description" cols="30" rows="5" class="form-control no-resize" required></textarea>
                                         <label class="form-label">合同内容*</label>
                                     </div>
                                 </div>
@@ -237,7 +248,7 @@
                                 <div id="ckfinder1"></div>
                                 
                                 
-                                <button class="btn btn-primary waves-effect" type="button" @click="post()">SUBMIT</button>
+                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
                             </form>
                         </div>
                     </div>
@@ -256,140 +267,98 @@
     <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-<!--   <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>-->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-	
-	<!-- Jquery Validation Plugin Css -->
+
+    <!-- Jquery Validation Plugin Css -->
     <script src="../../plugins/jquery-validation/jquery.validate.js"></script>
 
     <!-- JQuery Steps Plugin Js -->
     <script src="../../plugins/jquery-steps/jquery.steps.js"></script>
 
+    <!-- Sweet Alert Plugin Js -->
+    <script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>-->
+
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
-	
-	<!-- Autosize Plugin Js -->
-    <script src="../../plugins/autosize/autosize.js"></script>
 
     <!-- Custom Js -->
     <script src="../../js/admin.js"></script>
-	<script src="../../js/pages/forms/form-validation.js"></script>
-<!--	<script src="../../js/pages/forms/basic-form-elements.js"></script>-->
+    <script src="../../js/pages/forms/form-validation.js"></script>
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
-	<script src="../../ckfinder/ckfinder.js"></script>
-	
-	<!-- Vue -->
-	<script src="../../js/vue.min.js"></script>
-	<script src="../../js/vue-resource.min.js"></script>
-	
+    <script src="../../ckfinder/ckfinder.js"></script>
 
-	<script>
-  	function sc(){
-			// 重载js
-			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
-            });
-        };
+    <!-- Vue -->
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/vue-resource.min.js"></script>
+
+<script>
+var obj = JSON.parse(sessionStorage.allPermission);//获取session中的该用户权限
+var permission = new Vue({
+  el:'#menu',
+  data: obj,
+});
+var contractContent = new Vue({
+  el:'#form_validation',
+  data: {
+    input:{
+      id:sessionStorage.contract_id,
+      title:'',
+      clients:'',
+      date_begin:'',
+      date_end:'',
+      content:''
+    }
+  },
+});
+
+var clients = new Vue({
+  el: "#clients",
+  data: {
+    clientInfos:[],
+  },
+  methods: {
+    get:function(){
+      //发送 get 请求
+      this.$http.get('http://149.248.21.145:8000/clients/').then(function(res){
+        this.clientInfos=res.body;
+        //this.clients = JSON.parse(res.body);
+        //console.log(this.clients);
+        /*for(i=0, len=res.body.length; i<len; i++) {
+        
+          console.log(JSON.stringify(res.data[i]));
+          this.clients[i]=JSON.parse(JSON.stringify(res.data[i]));
+          console.log(this.clients[i].name);
+        }*/
+        console.log(this.clientInfos);
+      },function(res){
+        console.log(JSON.stringify(res.body));
+      });
+    },
+  }
+});
+
+clients.get();
+function sleep(delay) {
+  var start = (new Date()).getTime();
+  while ((new Date()).getTime() - start < delay) {
+    continue;
+  }
+}
+sleep(500);
+
+
 		
-		function cli() {
-//			$.getScript('../../plugins/bootstrap-select/js/bootstrap-select.js',function(){
-//            });
-		};
-    function qicao() {
-			window.location.href="db-qicao.html";
-    };
-    
-		var role = sessionStorage.role;
-		var permission = new Vue({
-			el:'#menu',
-			data: {
-				liucheng: false,
-				xinxi: false,
-				xitong: false,
-				data:{
-					id: '',
-					name: '',
-					can_read_contracts: false,
-					can_write_contracts: false,
-					can_countersign: false,
-					can_review: false,
-					can_sign: false,
-					can_distribute: false,
-					can_manage_users: false,
-					can_manage_roles: false,
-					can_manage_clients: false
-				}
-			},
-			methods: {
-				get: function(){
-					// test role
-					 //role = 2;
-					if(role!=null) {
-						//发送 post 请求
-						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-							this.liucheng = true;
-							this.xinxi = true;
-							this.xitong = true;
-							this.data=res.body;
-							sc();
-						},function(res){
-							console.log(res);
-						});
-					}
-				},
-			}
-		});
-		permission.get();
-		
-		var clients = new Vue({
-			el: "#form_validation",
-			data: {
-				clients:[],
-        id:sessionStorage.contract_id,
-        title:'',
-        date_begin:'',
-        date_end:'',
-        clientIds:'',
-        content:'',
-      },
-			methods: {
-				get: function() {
-					this.$http.get('http://149.248.21.145:8000/clients/').then(function(res){
-						this.clients=res.body;
-						cli();
-					},function(res){
-						console.log(res);
-					});
-				},
-        post:function(){
-           var array = new Array();
-           array[0] = this.clientIds;
-           console.log(array);
-          this.$http.post('http://149.248.21.145:8000/contracts/',{
-            title:this.title,
-            date_begin:this.date_begin,
-            date_end:this.date_end,
-            clients:array,
-            content:this.content,
-            author:sessionStorage.id
-          }).then(function(res){
-              this.$http.post('http://localhost:8081',{baseUrl:res.body.id},{emulateJSON:true}).then(function(res){
-                window.open("../../ckfinder/samples/full-page-open.html");
-                location=location;
-            },function(res){
-                console.log(res);
-            });
-          });
-        }
-      }
-    });
-		
-		clients.get();
-		
-	</script>
+CKFinder.widget( 'ckfinder1', {
+  height: 400,
+  //readOnly: true
+} );
+</script>
 </body>
 
 </html>
