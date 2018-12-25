@@ -82,7 +82,7 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_write_contracts">
-                                <a href="db-qicao.html">
+                                <a href="javascript:void(0);" onClick="qicao()">
                                     <span>起草合同</span>
                                 </a>
                             </li>
@@ -205,6 +205,12 @@
 //			$('body').removeClass($('body').prop("className"));
 //			$('body').addClass(localStorage.theme);
 //		}
+		
+		function qicao() {
+			window.location.href="db-qicao.html";
+		};
+		
+		
 		function sc(){
 			// 重载js
 			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
@@ -242,18 +248,36 @@
 					 //role = 2;
 					if(role!=null) {
 						//发送 post 请求
-						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
-							this.liucheng = true;
-							this.xinxi = true;
-							this.xitong = true;
-							this.data=res.body;
-              sessionStorage.allPermission = JSON.stringify(this.data);
-              /*var obj = JSON.parse(sessionStorage.allPermission);
-              console.log(obj.can_read_contracts);测试session如何存储对象*/
-							sc();
-						},function(res){
-							console.log(res);
+						
+						$.ajax({
+							type: "GET",
+							url: 'http://149.248.21.145:8000/roles/'+role+'/',
+							dataType: "json",
+							async: true,
+							success: function(res){
+								console.log(res);
+								this.liucheng = true;
+								this.xinxi = true;
+								this.xitong = true;
+								this.data=res;
+								sessionStorage.allPermission = JSON.stringify(this.data);
+								console.log(this.data);
+								sc();
+							},
+							
 						});
+//						this.$http.get('http://149.248.21.145:8000/roles/'+role+'/').then(function(res){
+//							this.liucheng = true;
+//							this.xinxi = true;
+//							this.xitong = true;
+//							this.data=res.body;
+//              sessionStorage.allPermission = JSON.stringify(this.data);
+//              /*var obj = JSON.parse(sessionStorage.allPermission);
+//              console.log(obj.can_read_contracts);测试session如何存储对象*/
+//							sc();
+//						},function(res){
+//							console.log(res);
+//						});
 					}
 				},
 			}

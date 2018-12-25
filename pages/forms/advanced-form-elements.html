@@ -1290,8 +1290,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="body">
-                            <select id="optgroup" class="ms" multiple="multiple">
+                        <div class="body" id="main">
+                            <select v-model="test" id="optgroup" class="ms" multiple="multiple">
                                 <optgroup label="Alaskan/Hawaiian Time Zone">
                                     <option value="AK">Alaska</option>
                                     <option value="HI">Hawaii</option>
@@ -1353,6 +1353,7 @@
                                     <option value="WV">West Virginia</option>
                                 </optgroup>
                             </select>
+							<button type="button" @click="send()">123</button>
                         </div>
                     </div>
                 </div>
@@ -1663,6 +1664,24 @@
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
+	
+	<!-- Vue -->
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/vue-resource.min.js"></script>
+	
+	<script>
+		var main = new Vue({
+			el: "#main",
+			data: {
+				test: [],
+			},
+			methods: {
+				send: function() {
+					console.log(this.test);
+				}
+			}
+		});
+	</script>
 </body>
 
 </html>
