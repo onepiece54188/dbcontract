@@ -342,8 +342,8 @@
     },
     methods: {
       openUrl:function(id){
-        this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
-        window.open('http://127.0.0.1:8083/ckfinder/samples/full-page-open-disabled.html');
+        this.$http.post('http://47.94.252.84:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
+        window.open('http://47.94.252.84:8083/ckfinder/samples/full-page-open-disabled.html');
       },
       show: async function(id, name, counterSignId) {
         const {value: opinion} = await Swal({
@@ -411,6 +411,7 @@
           dataType: "json",
           async: false,
           success: function(data){
+            console.log(data);
             table.d=data;
             table.a=data;
             table.getall();
@@ -420,11 +421,13 @@
       getall: function() {
         $.ajax({
           url: "http://149.248.21.145:8000/contracts/",
-          //data: {status: "reviewed"},
+          data: {status: "reviewed"},
           dateType: "json",
           async: false,
           success: function(data) {
-			  console.log(data);
+          for(i=0; i<table.d.length; i++) {
+            table.d[i].title="等待审批完成";
+          }
             for (i=0; i<data.length; i++){
               for (k=0; k<table.a.length; k++) {
                 if (data[i].id == table.a[k].contract) {

@@ -29,6 +29,7 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
 </head>
 
 <body class="theme-red">
@@ -283,6 +284,8 @@
 	<!-- Vue -->
 	<script src="../../js/vue.min.js"></script>
 	<script src="../../js/vue-resource.min.js"></script>
+    <!-- SweetAlert 2 -->
+    <script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
 	
 
 	<script>
@@ -374,21 +377,28 @@
            var array = new Array();
            array[0] = this.clientIds;
            console.log(array);
-          this.$http.post('http://149.248.21.145:8000/contracts/',{
-            title:this.title,
-            date_begin:this.date_begin,
-            date_end:this.date_end,
-            clients:array,
-            content:this.content,
-            author:sessionStorage.id
-          }).then(function(res){
-              this.$http.post('http://localhost:8081',{baseUrl:res.body.id},{emulateJSON:true}).then(function(res){
-                window.open("../../ckfinder/samples/full-page-open.html");
-                location=location;
+            this.$http.post('http://149.248.21.145:8000/contracts/',{
+              title:this.title,
+              date_begin:this.date_begin,
+              date_end:this.date_end,
+              clients:array,
+              content:this.content,
+              author:sessionStorage.id
+            }).then(function(res){
+                this.$http.post('http://47.94.252.84:8081',{baseUrl:res.body.id},{emulateJSON:true}).then(function(res){
+                  window.open("../../ckfinder/samples/full-page-open.html");
+                  location=location;
+              },function(res){
+              });
             },function(res){
-                console.log(res);
-            });
-          });
+                Swal({
+                  type: 'error',
+                  title: '信息填写错误',
+                  text: 'Something went wrong!',
+                  footer: '<p>结束时间早于起始时间?</p>'
+                });
+              }
+            );
         }
       }
     });

@@ -442,14 +442,14 @@
 					
 					//发送petch请求
 					this.$http.patch('http://149.248.21.145:8000/contracts/'+sessionStorage.contractid+'/', {id: sessionStorage.contractid, status: "distributed"}, {emulateJSON:true}).then(function(res){
-						console.log(res.body);    
+						console.log(res.body);
+            window.location.href="db-fenpei.html";
 					},function(){
 						console.log('请求失败处理');
 					});
 					
 					
 					console.log(this.$data);
-					window.location.href="db-fenpei.html";
 				}
 			}
 		})

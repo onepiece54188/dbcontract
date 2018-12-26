@@ -23,6 +23,8 @@
 
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
+    
+    <link href="../../sweetalert2-7.33.1/package/dist/sweetalert2.min.css" rel="stylesheet" />
 </head>
 
 <body class="login-page">
@@ -91,9 +93,12 @@
     <script src="../../js/admin.js"></script>
     <script src="../../js/pages/examples/sign-in.js"></script>
 	
-	<!-- Vue Js -->
-	<script src="../../js/vue.min.js"></script>
-	<script src="../../js/vue-resource.min.js"></script>
+    <!-- Vue Js -->
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/vue-resource.min.js"></script>
+    
+    <!-- SweetAlert 2 -->
+    <script src="../../sweetalert2-7.33.1/package/dist/sweetalert2.all.js"></script>
 	
 	
 	<script>
@@ -119,7 +124,10 @@
 							console.log(res.body);
 							sessionStorage.role = res.body.role;
 							sessionStorage.id = res.body.id;
-							window.location.href='index.html';
+              if(res.body.role != null)
+                window.location.href='index.html';
+              else
+                Swal('您当前无权限，请联系管理员分配权限');
 						},function(res){
 							console.log(res);
 						});

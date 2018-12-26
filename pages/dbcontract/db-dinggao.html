@@ -222,6 +222,7 @@
                                           <td class="contractContent"><p contenteditable="true">{{ i.content }}</p></td>
                                           <td class="align-left row">
                                             <div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
+                                              <button type="button" @click="show(i.countersigns)" class="btn bg-green waves-effect">会签意见</button>
                                               <button type="button" @click="openUrl(i.id)" class="btn bg-blue waves-effect">附 件</button>
                                               <button type="button" @click="update(index)" class="btn bg-amber waves-effect">定 稿</button>
                                               <button type="button" @click="delete1(i.id,i.title)" class="btn bg-red waves-effect">删 除</button>
@@ -361,7 +362,21 @@
               console.log(permission.data);
               //sc();
             },
-            
+          });
+          $.ajax({
+            type: "GET",
+            url: 'http://149.248.21.145:8000/users/',
+            dataType: "json",
+            data:{role:sessionStorage.role},
+            async: false,
+            success: function(res){
+              for(i=0;i<res.length;i++)
+              {
+                sessionStorage['user'+ res[i].id] = res[i].username;
+                console.log('user'+ res[i].id);
+                console.log(sessionStorage['user'+ res[i].id]);
+              }
+            },
           });
         }
       },
@@ -377,28 +392,30 @@
     
     methods: {
       openUrl:function(id){
-        this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
-        window.open('http://127.0.0.1:8083/ckfinder/samples/full-page-open.html');
+        this.$http.post('http://47.94.252.84:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){});
+        window.open('http://47.94.252.84:8083/ckfinder/samples/full-page-open.html');
       },
-      <!-- show: function(id, name,begin,end,content,status) { -->
-        <!-- this.$http.post('http://localhost:8081',{baseUrl:id},{emulateJSON:true}).then(function(res){}); -->
-        <!-- Swal({ -->
-          <!-- title: '<strong>合同信息</strong>', -->
-          <!-- type: 'info', -->
-          <!-- html: -->
-            <!-- '<p align="left"><span style="font-size:14px;"><strong>名称：</strong></span></p>'+ name + -->
-            <!-- '<p align="left"><span style="font-size:14px;"><strong>开始时间：</strong></span> </p>'+ begin + -->
-            <!-- '<p align="left"><span style="font-size:14px;"><strong>结束时间：</strong><br /></span> </p>'+ end + -->
-            <!-- '<p align="left"><span style="font-size:14px;"><strong>内容：</strong><br /></span> </p>'+ content +  -->
-            <!-- '<p align="left"><span style="font-size:14px;"><strong><a onclick="openUrl(\'http://127.0.0.1:8083/ckfinder/samples/full-page-open.html\')">附件</a></strong></span></p>', -->
-          <!-- showCloseButton: true, -->
-          <!-- focusConfirm: false, -->
-          <!-- confirmButtonAriaLabel: 'Thumbs up, great!', -->
-          <!-- confirmButtonText: -->
-            <!-- '<i class="fa fa-thumbs-up"></i> 关闭', -->
-          
-        <!-- }) -->
-      <!-- }, -->
+      show: function(countersigns) {
+        console.log(countersigns);
+        sessionStorage['countersign'] = '';
+        for(i=0;i<countersigns.length;i++)
+        {
+          sessionStorage['countersign'] += '<label style="float:left;font-size:18px;" class="form-label">会签人：'+sessionStorage['user'+ countersigns[i].user]+'</label>';
+          sessionStorage['countersign'] += '<br><div class="form-line"><label style="float:left;font-size:18px;" class="form-label">会签意见：'+countersigns[i].message+'</div></label>';
+        }
+        Swal({
+          title: '<strong>会签意见</strong>',
+          html:
+            '<div class="form-group">'+
+            sessionStorage['countersign'] + 
+            '</div>',
+          showCloseButton: true,
+          focusConfirm: false,
+          confirmButtonAriaLabel: 'Thumbs up, great!',
+          confirmButtonText:
+            '<i class="fa fa-thumbs-up"></i> 关闭',
+        })
+      },
       update: function(index) {
         len1 = $(".contractId:eq("+index+")").html().length;
         len2 = $(".contractContent:eq("+index+")").html().length;
