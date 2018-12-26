@@ -186,7 +186,7 @@
                             </h2>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:void(0);" onclick="addRole()">
                                         <i class="material-icons">add</i>
                                     </a>
                                 </li>
@@ -262,6 +262,115 @@
     // 重载js
     $.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){});
   };
+  function addRole(){
+    Swal({
+      html:
+        '<div class="form-group">'+
+        '<label style="float:left;font-size:18px;" class="form-label">名称:</label>'+
+        '<div class="form-line"><input type="text" class="form-control" id="name1" name="name" placeholder="请输入名称" required></div></div>' +
+        '<div class="demo-checkbox">'+
+        '<input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-red" />'+
+        '<label for="md_checkbox_21">起草合同</label>'+
+        '<input type="checkbox" id="md_checkbox_22" class="filled-in chk-col-pink" />'+
+        '<label for="md_checkbox_22">会签合同</label>'+
+        '<input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-purple" />'+
+        '<label for="md_checkbox_23">审批合同</label>'+
+        '<input type="checkbox" id="md_checkbox_24" class="filled-in chk-col-deep-purple" />'+
+        '<label for="md_checkbox_24">签订合同</label>'+
+        '<input type="checkbox" id="md_checkbox_25" class="filled-in chk-col-indigo" />'+
+        '<label for="md_checkbox_25">查询合同</label>'+
+        '<input type="checkbox" id="md_checkbox_26" class="filled-in chk-col-blue" />'+
+        '<label for="md_checkbox_26">客户管理</label>'+
+        '<input type="checkbox" id="md_checkbox_27" class="filled-in chk-col-light-blue" />'+
+        '<label for="md_checkbox_27">合同分配</label>'+
+        '<input type="checkbox" id="md_checkbox_28" class="filled-in chk-col-cyan" />'+
+        '<label for="md_checkbox_28">用户管理</label>'+
+        '<input type="checkbox" id="md_checkbox_29" class="filled-in chk-col-teal" />'+
+        '<label for="md_checkbox_29">角色管理</label>'+
+        '</div>',
+      <!-- onBeforeOpen: () => { -->
+        <!-- if(can_write_contracts) -->
+          <!-- $("#md_checkbox_21").prop("checked",'+can_write_contracts+'); -->
+        <!-- if(can_countersign) -->
+          <!-- $("#md_checkbox_22").prop("checked",'+can_countersign+'); -->
+        <!-- if(can_review) -->
+          <!-- $("#md_checkbox_23").prop("checked",'+can_review+'); -->
+        <!-- if(can_sign) -->
+          <!-- $("#md_checkbox_24").prop("checked",'+can_sign+'); -->
+        <!-- if(can_read_contracts) -->
+          <!-- $("#md_checkbox_25").prop("checked",'+can_read_contracts+'); -->
+        <!-- if(can_manage_clients) -->
+          <!-- $("#md_checkbox_26").prop("checked",'+can_manage_clients+'); -->
+        <!-- if(can_distribute) -->
+          <!-- $("#md_checkbox_27").prop("checked",'+can_distribute+'); -->
+        <!-- if(can_manage_users) -->
+          <!-- $("#md_checkbox_28").prop("checked",'+can_manage_users+'); -->
+        <!-- if(can_manage_roles) -->
+          <!-- $("#md_checkbox_29").prop("checked",'+can_manage_roles+'); -->
+      <!-- }, -->
+      confirmButtonText: '添加',
+      cancelButtonText: '取消',
+      focusConfirm: false,
+      showCancelButton: true,
+    }).then((result)=>{
+      can_write_contracts1 = $("#md_checkbox_21").prop("checked");
+      can_countersign1 = $("#md_checkbox_22").prop("checked");
+      can_review1 = $("#md_checkbox_23").prop("checked");
+      can_sign1 = $("#md_checkbox_24").prop("checked");
+      can_read_contracts1 = $("#md_checkbox_25").prop("checked");
+      can_manage_clients1 = $("#md_checkbox_26").prop("checked");
+      can_distribute1 = $("#md_checkbox_27").prop("checked");
+      can_manage_users1 = $("#md_checkbox_28").prop("checked");
+      can_manage_roles1 = $("#md_checkbox_29").prop("checked");
+      
+      nameInfo = document.getElementById("name1").value;
+      const swalWithBootstrapButtons = Swal.mixin({
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: true,
+      })
+      swalWithBootstrapButtons({
+        title: '确定添加么',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '是, 添加',
+        cancelButtonText: '否, 取消',
+        focusConfirm: false,
+        reverseButtons: false
+      }).then((result) => {
+        if (result.value) {
+          console.log('yes');
+          Vue.http.post('http://149.248.21.145:8000/roles/',
+            {
+              name:nameInfo,
+              can_write_contracts:can_write_contracts1,
+              can_countersign:can_countersign1,
+              can_review:can_review1,
+              can_sign:can_sign1,
+              can_read_contracts:can_read_contracts1,
+              can_manage_clients:can_manage_clients1,
+              can_distribute:can_distribute1,
+              can_manage_users:can_manage_users1,
+              can_manage_roles:can_manage_roles1
+            }
+          ).then(function(res){
+            swalWithBootstrapButtons(
+            '已添加!',
+            ).then((result) => {
+              location=location;
+            })
+          })
+        } else if (
+          // Read more about handling dismissals
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons(
+            '已取消',
+          )
+        }
+      })
+    })
+  }
 	</script>
 	
 	<script>
@@ -356,23 +465,23 @@
               '<div class="form-line"><input type="text" class="form-control" id="name1" name="name" value="'+name+'" required></div></div>' +
               '<div class="demo-checkbox">'+
               '<input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-red" />'+
-              '<label for="md_checkbox_21">RED</label>'+
+              '<label for="md_checkbox_21">起草合同</label>'+
               '<input type="checkbox" id="md_checkbox_22" class="filled-in chk-col-pink" />'+
-              '<label for="md_checkbox_22">PINK</label>'+
+              '<label for="md_checkbox_22">会签合同</label>'+
               '<input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-purple" />'+
-              '<label for="md_checkbox_23">PURPLE</label>'+
+              '<label for="md_checkbox_23">审批合同</label>'+
               '<input type="checkbox" id="md_checkbox_24" class="filled-in chk-col-deep-purple" />'+
-              '<label for="md_checkbox_24">DEEP PURPLE</label>'+
+              '<label for="md_checkbox_24">签订合同</label>'+
               '<input type="checkbox" id="md_checkbox_25" class="filled-in chk-col-indigo" />'+
-              '<label for="md_checkbox_25">INDIGO</label>'+
+              '<label for="md_checkbox_25">查询合同</label>'+
               '<input type="checkbox" id="md_checkbox_26" class="filled-in chk-col-blue" />'+
-              '<label for="md_checkbox_26">BLUE</label>'+
+              '<label for="md_checkbox_26">客户管理</label>'+
               '<input type="checkbox" id="md_checkbox_27" class="filled-in chk-col-light-blue" />'+
-              '<label for="md_checkbox_27">LIGHT BLUE</label>'+
+              '<label for="md_checkbox_27">合同分配</label>'+
               '<input type="checkbox" id="md_checkbox_28" class="filled-in chk-col-cyan" />'+
-              '<label for="md_checkbox_28">CYAN</label>'+
+              '<label for="md_checkbox_28">用户管理</label>'+
               '<input type="checkbox" id="md_checkbox_29" class="filled-in chk-col-teal" />'+
-              '<label for="md_checkbox_29">TEAL</label>'+
+              '<label for="md_checkbox_29">角色管理</label>'+
               '</div>',
             onBeforeOpen: () => {
               if(can_write_contracts)
@@ -396,6 +505,7 @@
             },
             confirmButtonText: '更改',
             cancelButtonText: '取消',
+            focusConfirm: false,
             showCancelButton: true,
           }).then((result)=>{
             can_write_contracts1 = $("#md_checkbox_21").prop("checked");
@@ -421,6 +531,7 @@
               showCancelButton: true,
               confirmButtonText: '是, 更改',
               cancelButtonText: '否, 取消',
+              focusConfirm: false,
               reverseButtons: false
             }).then((result) => {
               if (result.value) {

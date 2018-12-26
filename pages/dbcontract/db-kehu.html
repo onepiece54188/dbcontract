@@ -90,7 +90,7 @@
                         </a>
                         <ul class="ml-menu">
                             <li v-if="data.can_write_contracts">
-                                <a href="javascript:void(0);" onClick="qicao()">
+                                <a href="db-qicao.html">
                                     <span>起草合同</span>
                                 </a>
                             </li>
@@ -186,7 +186,7 @@
                             </h2>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:void(0);" onclick="addClient()">
                                         <i class="material-icons">add</i>
                                     </a>
                                 </li>
@@ -204,14 +204,15 @@
                                         </tr>
                                     </thead>
 									<tbody>
-										<template v-for="i in d">
+										<template v-for="(i,index) in d">
 											<tr>
-                        						<td>{{ i.id }}</td>
-												<td>{{ i.name }}</td>
-												<td>{{ i.email }}</td>
+                        <td>{{ i.id }}</td>
+												<td class="clientName"><p contenteditable="true">{{ i.name }}</p></td>
+												<td class="clientEmail"><p contenteditable="true">{{ i.email }}</p></td>
 												<td class="row">
 													<div class="btn-group btn-group-xs js-sweetalert" role="group" aria-label="Extra-small button group">
-														<button type="button" @click="show(i.id,i.title,i.countersigns[0].id)" class="btn bg-amber waves-effect">修改角色</button>
+														<button type="button" @click="update(i.id,index)" class="btn bg-amber waves-effect">修改信息</button>
+                            <button type="button" @click="delete1(i.id)" class="btn bg-red waves-effect">删 除</button>
 													</div>
 												</td>
 											</tr>
@@ -240,19 +241,49 @@
 //			$('body').removeClass($('body').prop("className"));
 //			$('body').addClass(localStorage.theme);
 //		}
-		
-		function qicao() {
-			window.location.href="db-qicao.html";
-		};
-		
-		
-		function sc(){
-			// 重载js
-			$.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){
+  function sc(){
+    // 重载js
+    $.getScript('https://totalwar.oss-cn-beijing.aliyuncs.com/static/js/admin.js',function(){});
+  };
+  
+  function addClient(){
+    Swal({
+      title: '客户信息',
+      html:
+        '<div class="form-group">'+
+              '<label style="float:left;font-size:18px;" class="form-label">姓名:</label>'+
+              '<div class="form-line"><input type="text" class="form-control" id="name1" name="name" placeholder="请输入姓名" required></div>' +
+              '<label style="float:left;font-size:18px;" class="form-label">邮箱:</label>' + 
+              '<div class="form-line"><input type="email" class="form-control" id="email1" name="email" placeholder="请输入邮箱" required></div>'+
+        '</div>',
+      showCancelButton: true,
+      }).then((result) => {
+        if (result.value) {
+          nameInfo = document.getElementById("name1").value;
+          emailInfo = document.getElementById("email1").value;
+          Swal({
+            title: '确定添加么',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+          }).then((result) => {
+            if (result.value) {
+              Vue.http.post('http://149.248.21.145:8000/clients/',{email:emailInfo,name:nameInfo}).then(function(res){
+                Swal(
+                  '添加成功',
+                ).then((result) => {
+                  location=location;
+                })
                 
-            });
-			
-        };
+              });
+            }
+          })
+        }
+      })
+  };
 	</script>
 	
 	<script>
@@ -338,6 +369,73 @@
 						},
 					});
 				},
+        update: function(id,index) {
+          len1 = $(".clientName:eq("+index+")").html().length;
+          len2 = $(".clientEmail:eq("+index+")").html().length;
+          clientName = $(".clientName:eq("+index+")").html().substr('<p contenteditable="true">'.length,len1-4-'<p contenteditable="true">'.length);
+          clientEmail = $(".clientEmail:eq("+index+")").html().substr('<p contenteditable="true">'.length,len2-4-'<p contenteditable="true">'.length);
+          Swal({
+              title: '确定提交么',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '确认',
+              cancelButtonText: '取消',
+            }).then((result) => {
+              if (result.value) {
+                this.$http.patch('http://149.248.21.145:8000/clients/'+id+'/',{name:clientName,email:clientEmail}).then(function(res){
+                  Swal(
+                    '修改成功',
+                  ).then((result) => {
+                    location=location;
+                  })
+                  
+                });
+              }
+            })
+        },
+        delete1: function(id, name) {
+          const swalWithBootstrapButtons = Swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: true,
+          })
+
+          swalWithBootstrapButtons({
+            title: '确定删除么',
+            text: "删除后不可恢复！",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '是, 删除',
+            cancelButtonText: '否, 取消',
+            reverseButtons: false
+          }).then((result) => {
+            if (result.value) {
+              console.log('yes');
+              this.$http.delete('http://149.248.21.145:8000/clients/'+id+'/').then(function(res){
+                swalWithBootstrapButtons(
+                '已删除!',
+                '该合同已被删除',
+                'success'
+                ).then((result) => {
+                  location=location;
+                })
+              })
+            } else if (
+              // Read more about handling dismissals
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+            
+              console.log('no');
+              swalWithBootstrapButtons(
+                '已取消',
+                '合同未被删除',
+                'error'
+              )
+            }
+          })
+        },
 			}
 		});
 		table.get();
